@@ -3,6 +3,11 @@
             [cheshire.core :as json]
             [swagger-gen.util :refer [normalize-def]]
             [yaml.core :as yml]))
+          
+(defn load-swagger 
+  "Load a swagger spec from disk. TODO make polymorphic over formats"
+  [path-to-file]
+  (yml/from-file path-to-file false))
 
 (defn- get-section
   [spec section]
@@ -48,9 +53,6 @@
             (merge {:method method :path k}
                    (keywordize-keys attributes))))))))
 
-(defn load-swagger [path-to-file]
-  (yml/from-file path-to-file false))
-
 (defn parse-swagger
   "Load a swagger specification from file path and convert it into 
    a sane/traversable format making it easier to work with"
@@ -58,4 +60,3 @@
   (let [data (load-swagger path-to-swagger)]
     {:paths (swagger-paths data)
      :definitions (swagger-defs data)}))
-
