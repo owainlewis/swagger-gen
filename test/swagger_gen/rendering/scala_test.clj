@@ -21,5 +21,4 @@
 (deftest test-render-case-class
   (testing "should render a Scala case class"
     (is (= model1-expected (render-case-class model1)))
-    (is (= model2-expected (render-case-class model2)))
-    ))
+    (is (= model2-expected (render-case-class model2)))))
