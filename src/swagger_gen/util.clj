@@ -14,4 +14,3 @@
   "Normalize a definition like #/definitions/Card into Card"
   [type-ref]
   (clojure.string/replace-first type-ref #"#/definitions/" ""))
-
