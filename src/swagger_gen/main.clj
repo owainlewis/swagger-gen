@@ -1,6 +1,5 @@
 (ns swagger-gen.main
   (:require [swagger-gen.rendering.scala :as scala]
-            [swagger-gen.util :refer [write-lines]]
             [clostache.parser :refer [render-resource]]
             [swagger-gen.core :as core]))
 

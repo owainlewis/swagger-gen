@@ -32,8 +32,8 @@
 (defn get-definitions [spec]
   (when-let [data (keywordize-keys (get-section spec :definitions))]
     (map (fn [definition]
-           (let [[name attributes] definition]
-             {:name name
+           (let [[class-name attributes] definition]
+             {:name (name class-name)
               :attributes attributes})) data)))
     
 (defn swagger-defs
