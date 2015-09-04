@@ -1,5 +1,7 @@
 # swagger-gen
 
+[![Build Status](https://travis-ci.org/owainlewis/swagger-gen.svg)](https://travis-ci.org/owainlewis/swagger-gen)
+
 A library for easy swagger code generation
 
 ## Goals
