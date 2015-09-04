@@ -11,7 +11,7 @@
 
 (defn- get-section
   "Util function for extracting swagger spec sections
-    e.g (get-section :paths)
+    e.g (get-section :paths)"
   [spec section]
   (get spec (name section)))
 
