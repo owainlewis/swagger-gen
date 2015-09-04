@@ -2,6 +2,12 @@
 
 A library for easy swagger code generation
 
+## Goals
+
+1. Lightweight and simple DSL for traversing Swagger Specs
+2. Clean and simple code gen based on templates
+3. More complex code generation through Clojure functions
+
 ## Usage
 
 ### Parsing specs
