@@ -23,5 +23,3 @@
     (is (= model1-expected (render-case-class model1)))
     (is (= model2-expected (render-case-class model2)))
     ))
-
-
