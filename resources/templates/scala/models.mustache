@@ -1,12 +1,9 @@
 package com.google.myproject
 
 import spray.json.DefaultJsonProtocol
-{{#models}}
-  
-{{repr}}
 
+{{#definitions}}
 object {{name}} extends DefaultJsonProtocol with SnakeCaseProductFormats {
-  implicit val format = jsonFormat{{count}}({{name}}.apply)
+  implicit val format = jsonFormat1({{name}}.apply)
 }
-{{/models}}
-
+{{/definitions}}

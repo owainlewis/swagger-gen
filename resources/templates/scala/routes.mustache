@@ -1,0 +1,16 @@
+package com.monitise.mcp.rest.services
+
+import spray.routing.{HttpService, Route}
+
+trait DemoService extends HttpService {
+
+  def {{routeName}}: Route = path({{path}})) {
+    {{method}} {
+      complete {
+        "OK"
+      }
+    }
+  }
+
+  // val routes = {{}}
+}
