@@ -1,5 +1,0 @@
-; CIDER 0.9.0snapshot (package: 20150604.1532) (Java 1.8.0_40, Clojure 1.7.0, nREPL 0.2.6)
-WARNING: CIDER requires nREPL 0.2.7 (or newer) to work properly
-user> (in-ns 'swagger-gen.core)
-#object[clojure.lang.Namespace 0xdb9d420 "swagger-gen.core"]
-swagger-gen.core> 
