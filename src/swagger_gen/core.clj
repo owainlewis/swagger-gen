@@ -4,23 +4,25 @@
             [swagger-gen.util :refer [normalize-def]]
             [yaml.core :as yml]))
 
-(defn yaml-path? [path-to-file]
-  (or (.endsWith path-to-file ".yaml")
-      (.endsWith path-to-file ".yml")))
+(defn file-extension [spec]
+  (->> (clojure.string/split spec #"\.") last keyword))
 
-(defn load-swagger
-  "Load a swagger spec from disk.
-   File can be either yaml or json format"
-  [path-to-file]
-  (if (yaml-path? path-to-file)
-    (yml/from-file path-to-file false)
-    (->> path-to-file slurp json/parse-string)))
+(defmulti load-swagger-file file-extension)
+
+(defmethod load-swagger-file :json [spec]
+  (->> spec slurp json/parse-string))
+
+(defmethod load-swagger-file :yaml [spec]
+  (yml/from-file spec false))
 
 (defn- get-section
   "Util function for extracting swagger spec sections
     e.g (get-section :paths)"
   [spec section]
   (get spec (name section)))
+
+;; Definitions
+;; **********************************************************************
 
 (defn normalize-definition
   "Take a raw YAML definition from swagger and normalize it
@@ -51,6 +53,13 @@
   (when-let [definitions (get-definitions spec)]
     (map normalize-definition definitions)))
 
+;; Paths
+;;
+;; The main task we need to do here is to flatten some nested 
+;; structures i.e [ /route [method1 method2]  ]
+;
+;; **********************************************************************
+
 (defn params-of-type 
   [swagger-route param-type]
   (->> swagger-route 
@@ -72,6 +81,9 @@
             (merge {:method method :path k}
                    (keywordize-keys attributes))))))))
 
+;; Info
+;; **********************************************************************
+
 (defn swagger-info [spec]
   (get-section spec :info))
 
@@ -79,7 +91,7 @@
   "Load a swagger specification from file path and convert it into
    a sane/traversable format making it easier to work with"
   [path-to-swagger]
-  (let [data (load-swagger path-to-swagger)]
-    {:info (swagger-info data)
+  (let [data (load-swagger-file path-to-swagger)]
+    {:info  (swagger-info data)
      :paths (swagger-paths data)
      :definitions (swagger-defs data)}))

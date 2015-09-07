@@ -1,9 +1,9 @@
-package com.google.myproject
+package com.monitise.mcp.service.models
 
 import spray.json.DefaultJsonProtocol
 
 {{#definitions}}
 object {{name}} extends DefaultJsonProtocol with SnakeCaseProductFormats {
-  implicit val format = jsonFormat1({{name}}.apply)
+  implicit val format = jsonFormat0({{name}}.apply)
 }
 {{/definitions}}

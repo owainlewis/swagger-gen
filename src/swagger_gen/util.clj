@@ -1,6 +1,6 @@
 (ns swagger-gen.util
   (:require 
-    [clojure.string :refer [split lower-case capitalize join]]))
+    [clojure.string :refer [split replace-first lower-case capitalize join]]))
 
 (defn camelize
   "Convert snake_case string into CamelCase"
@@ -13,4 +13,4 @@
 (defn normalize-def
   "Normalize a definition like #/definitions/Card into Card"
   [type-ref]
-  (clojure.string/replace-first type-ref #"#/definitions/" ""))
+  (replace-first type-ref #"#/definitions/" ""))
