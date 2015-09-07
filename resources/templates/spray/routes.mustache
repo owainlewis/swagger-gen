@@ -1,0 +1,31 @@
+/*
+ * Copyright 2003-2015 Monitise Group Limited. All Rights Reserved.
+ *
+ * Save to the extent permitted by law, you may not use, copy, modify,
+ * distribute or create derivative works of this material or any part
+ * of it without the prior written consent of Monitise Group Limited.
+ * Any reproduction of this material must contain this notice.
+ */
+package com.monitise.mcp.cardstorage.service.consumer.impl
+
+trait GeneratedRoutes
+  extends HttpService
+  with MCPSprayDirectives
+  with TokenisationDirectives {
+  this: RouteUtilities =>
+  
+  {{#paths}}    
+    val {{operationId}}: Route  =
+      path({{path}}) {
+        {{method}} {
+          processIAM({{category}}, None, None, {{roles}}, {{security}}) { msg =>
+            tokeniseEntity(lensFor[{{model}}]) { body =>
+              complete(consumer_{{operationId}}_impl(msg, body))
+            }
+          }
+        }
+      }
+
+    def {{operationId}}_impl(msg: Message[Nothing], add: CardAdd): Future[HttpResponse]
+  {{/paths}}
+}
