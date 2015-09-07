@@ -51,8 +51,12 @@
   (when-let [definitions (get-definitions spec)]
     (map normalize-definition definitions)))
 
-(defn params-of-type [swagger-route param-type]
-  (->> swagger-route :parameters (filter #(= (:in %) param-type)) (into [])))
+(defn params-of-type 
+  [swagger-route param-type]
+  (->> swagger-route 
+       :parameters 
+       (filter #(= (:in %) param-type))
+       (into [])))
 
 (defn query-params [swagger-route]
   (params-of-type swagger-route "query"))
