@@ -41,7 +41,6 @@ object {{name}} extends DefaultJsonProtocol with SnakeCaseProductFormats {
   implicit val format = jsonFormat{{arglen}}({{name}}.apply)
 }
 {{/definitions}}
-
 ```
 
 ## License
