@@ -53,13 +53,6 @@
   (when-let [definitions (get-definitions spec)]
     (map normalize-definition definitions)))
 
-;; Paths
-;;
-;; The main task we need to do here is to flatten some nested 
-;; structures i.e [ /route [method1 method2]  ]
-;
-;; **********************************************************************
-
 (defn params-of-type 
   [swagger-route param-type]
   (->> swagger-route 
