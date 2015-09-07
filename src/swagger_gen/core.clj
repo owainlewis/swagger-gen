@@ -21,9 +21,6 @@
   [spec section]
   (get spec (name section)))
 
-;; Definitions
-;; **********************************************************************
-
 (defn normalize-definition
   "Take a raw YAML definition from swagger and normalize it
    to a form that is easier to work with and parse"
@@ -74,11 +71,7 @@
             (merge {:method method :path k}
                    (keywordize-keys attributes))))))))
 
-;; Info
-;; **********************************************************************
-
-(defn swagger-info [spec]
-  (get-section spec :info))
+(defn swagger-info [spec] (get-section spec :info))
 
 (defn parse-swagger
   "Load a swagger specification from file path and convert it into
