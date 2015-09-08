@@ -36,11 +36,11 @@
 
 (defn -main [& args]
   (let [args (parse-opts args cli-options)]
-    (let [template (get-in args [:options :template])
-          spec (get-in args [:options :spec])
+    (let [template    (get-in args [:options :template])
+          spec        (get-in args [:options :spec])
           destination (get-in args [:options :destination])]
       ;; TODO error handling on missing args
       (do
         (println "Generating swagger output from spec")
         (spit destination (render-swagger spec template))))))
-
+      
