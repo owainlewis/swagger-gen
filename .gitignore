@@ -12,3 +12,7 @@ pom.xml.asc
 
 /src/swagger_gen/examples
 
+cardstorage.yaml
+
+*.scala
+

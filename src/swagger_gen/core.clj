@@ -4,7 +4,9 @@
             [swagger-gen.util :refer [normalize-def]]
             [yaml.core :as yml]))
 
-(defn file-extension [spec]
+(defn file-extension
+  "Extract the file extension from a swagger spec or file"
+  [spec]
   (->> (clojure.string/split spec #"\.") last keyword))
 
 (defmulti load-swagger-file file-extension)
@@ -56,6 +58,9 @@
        :parameters 
        (filter #(= (:in %) param-type))
        (into [])))
+
+(defn body-params [swagger-route]
+  (params-of-type swagger-route "body"))
 
 (defn query-params [swagger-route]
   (params-of-type swagger-route "query"))

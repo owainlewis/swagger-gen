@@ -14,3 +14,11 @@
   "Normalize a definition like #/definitions/Card into Card"
   [type-ref]
   (replace-first type-ref #"#/definitions/" ""))
+
+(defn seq-to-string
+  ([xs]           (apply str xs))
+  ([xs separator] (apply str (interpose separator xs))))
+
+(defn quote-string
+  [s]
+  (format "\"%s\"" s))

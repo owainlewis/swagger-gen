@@ -1,6 +1,9 @@
 (ns swagger-gen.spray
-  (:require [clojure.string :refer [blank? replace split]]
-            [swagger-gen.util :refer [camelize normalize-def]]))
+  (:refer-clojure :exclude [replace])
+  (:require
+    [clojure.string :refer [blank? replace split]]
+    [swagger-gen.languages.scala :as lang-scala]
+    [swagger-gen.util :refer [camelize normalize-def quote-string]]))
 
 ;; Model generation code
 
@@ -35,6 +38,14 @@
 
 ;; Route generation
 
+(defn to-cons-list
+  "Generate a scala list from a sequence of values"
+  [xs]
+  (let [quoted-strings (mapv quote-string xs)]
+        (->> (conj quoted-strings "Nil")
+             (interpose " :: ")
+             (apply str))))
+
 (defn starts-and-ends-with? [input starts ends]
   (and (.startsWith input starts)
        (.endsWith input ends)))
@@ -60,7 +71,10 @@
                   (conj acc v))) [] (route-parts path)))))
 
 (defn parenthesize [args]
-  (str "(" (apply str (interpose ", " args)) ")"))
+  (condp = (count args)
+    0 ""
+    1 (first args)
+    (str "(" (apply str (interpose ", " args)) ")")))
 
 (defn deconstruct-spray-path [path]
   (let [route (to-spray-route path)

@@ -1,20 +1,9 @@
 (ns swagger-gen.spray-test
-    (:require [clojure.test :refer :all]
-              [swagger-gen.spray :refer :all]))
+  (:require [clojure.test :refer :all]
+            [swagger-gen.fixtures :refer :all]
+            [swagger-gen.spray :refer :all]))
 
 (def petstore-yaml "resources/swagger/petstore.yaml")
-
-;; Model fixtures
-
-(def expiry-date
-  {:name "ExpiryDate",
-   :args [{:name "expiry_month", :type "string", :required true}
-          {:name "expiry_year", :type "string", :required true}]})
-
-(def error-model
-  {:name "Error",
-   :args [{:name "code", :type "integer", :items nil, :required true}
-          {:name "message", :type "string", :items nil, :required true}]})
 
 (deftest generate-case-object-test []
   (testing "should generate a Scala case object when arity is zero"
@@ -43,4 +32,11 @@
   (testing "should return a spray route string"
     (is (= "api / users / Segment"
            (to-spray-route "/api/users/{id}")))))
-                 
+
+(deftest parenthesize-test []
+  (testing "should handle no args"
+    (is (= "" (parenthesize [])))
+    (is (= "foo" (parenthesize ["foo"])))
+    (is (= "(foo, bar") (parenthesize ["foo", "bar"]))))
+
+
