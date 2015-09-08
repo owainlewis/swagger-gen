@@ -54,15 +54,13 @@ case class string.
   []
   (let [spec "resources/swagger/petstore.yaml"
         template "src/swagger_gen/examples/scala/template.mustache"
-        additional-params {
-          :namespace "com.google.service.models"
-                           }]
+        additional-params { :namespace "com.google.service.models" }]
     (print
-    (render-swagger spec template
-                    (fn [spec]
-                      (merge additional-params
-                             (assoc spec :definitions
-                                    (map expand-model (:definitions spec)))))))))
+      (render-swagger spec template
+        (fn [spec]
+          (merge additional-params
+            (assoc spec :definitions
+              (map expand-model (:definitions spec)))))))))
 ```
 
 ## Running the example
