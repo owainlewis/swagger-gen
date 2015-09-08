@@ -14,7 +14,7 @@
 
 (deftest parse-swagger-test
   (testing "should parse swagger into sections"
-    (is (= (count (keys (parse-swagger petstore-yaml))) 3))))
+    (is (= (count (keys (parse-swagger petstore-yaml))) 4))))
 
 (deftest paths-test
   (testing "should extract all paths into a flattened list"

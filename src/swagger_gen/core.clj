@@ -72,6 +72,7 @@
                    (keywordize-keys attributes))))))))
 
 (defn swagger-info [spec] (get-section spec :info))
+(defn swagger-apis [spec] (get-section spec :apis))
 
 (defn parse-swagger
   "Load a swagger specification from file path and convert it into
@@ -80,4 +81,5 @@
   (let [data (load-swagger-file path-to-swagger)]
     {:info  (swagger-info data)
      :paths (swagger-paths data)
+     :apis (swagger-apis data)
      :definitions (swagger-defs data)}))
