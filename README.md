@@ -43,23 +43,6 @@ For more complex code generation tasks we can write custom functions to assist w
     (assoc spec :key value)))
 ```
 
-And an example template
-
-```mustache
-package com.google.service.models
-
-import spray.json.DefaultJsonProtocol
-
-{{#definitions}}
-
-{{class}}
-
-object {{name}} extends DefaultJsonProtocol with SnakeCaseProductFormats {
-  implicit val format = jsonFormat{{arglen}}({{name}}.apply)
-}
-{{/definitions}}
-```
-
 ## License
 
 Copyright © 2015 Owain Lewis
