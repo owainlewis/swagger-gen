@@ -15,11 +15,9 @@
   []
   (let [spec "resources/swagger/petstore.yaml"
         template "src/swagger_gen/examples/scala/template.mustache"
-        additional-params {
-          :namespace "com.google.service.models"
-                           }]
+        additional-params { :namespace "com.google.service.models" }]
     (print
-    (render-swagger spec template
+      (render-swagger spec template
                     (fn [spec]
                       (merge additional-params
                              (assoc spec :definitions
