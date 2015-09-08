@@ -12,10 +12,42 @@ A library for easy swagger code generation using Mustache as the template engine
 
 ## Usage
 
-There are two ways to use the swagger generator. If your use case is simple enough you can use 
+There are two ways to use the swagger generator. If your use case is simple enough, you can use 
 the CLI and a single mustache template to generate code from a swagger spec.
 
 This example generates HTML docs from the canonical petstore example.
+
+We start with a simple mustache template which contains placeholders for our final HTML file
+
+```html
+<html>
+<head>
+  <title>Swagger Documentation</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+  <div class="container">
+    <h1>{{info.title}}</h1>
+    <p>{{info.description}}</p>
+    <table class="table table-striped">
+      <tr>
+        <th>Method</th>
+        <th>Path</th>
+        <th>Operation ID</th>
+      </tr>
+  
+      {{#paths}}
+        <tr>
+          <td>{{method}}</td>
+          <td>{{path}}</td>
+          <td>{{operationId}}</td>
+        </tr>
+      {{/paths}}
+    </table>
+  </div>
+</body>
+</html>
+```
 
 There are three arguments to the generator
 
