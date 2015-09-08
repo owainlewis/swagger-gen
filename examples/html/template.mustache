@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>Swagger Documentation</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+  <div class="container">
+
+    <h1>{{info.title}}</h1>
+
+    <p>{{info.description}}</p>
+
+    <table class="table table-striped">
+      <tr>
+        <th>Method</th>
+        <th>Path</th>
+        <th>Operation ID</th>
+      </tr>
+  
+      {{#paths}}
+        <tr>
+          <td>{{method}}</td>
+          <td>{{path}}</td>
+          <td>{{operationId}}</td>
+        </tr>
+      {{/paths}}
+    </table>
+  </div>
+</body>
+</html>
