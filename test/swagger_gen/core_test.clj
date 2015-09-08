@@ -20,4 +20,3 @@
   (testing "should extract all paths into a flattened list"
     (let [extracted (->> (parse-swagger petstore-yaml) :paths)]
       (is (= (count extracted) 4)))))
-
