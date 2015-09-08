@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/owainlewis/swagger-gen.svg)](https://travis-ci.org/owainlewis/swagger-gen)
 
-A library for easy swagger code generation
+A library for easy swagger code generation using Mustache as the template engine.
 
 ## Goals
 
@@ -61,6 +61,23 @@ case class string.
           (merge additional-params
             (assoc spec :definitions
               (map expand-model (:definitions spec)))))))))
+```
+
+Swagger gen templates are just simple mustache files. 
+
+```
+package {{namespace}}
+
+import spray.json.DefaultJsonProtocol
+
+{{#definitions}}
+{{class}}
+
+object {{name}} extends DefaultJsonProtocol {
+  implicit val format = jsonFormat{{arglen}}({{name}}.apply)
+}
+
+{{/definitions}}
 ```
 
 ## Running the example
