@@ -43,4 +43,3 @@
       (do
         (println "Generating swagger output from spec")
         (spit destination (render-swagger spec template))))))
-      
