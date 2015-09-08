@@ -40,7 +40,7 @@ For more complex code generation tasks we can write custom functions to assist w
 
 (render-swagger spec template
   (fn [spec]
-    (assoc spec :key value)))
+    (assoc spec :foo :bar)))
 ```
 
 ## License
