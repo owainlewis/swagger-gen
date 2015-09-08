@@ -1,0 +1,12 @@
+package {{namespace}}
+
+import spray.json.DefaultJsonProtocol
+
+{{#definitions}}
+{{class}}
+
+object {{name}} extends DefaultJsonProtocol {
+  implicit val format = jsonFormat{{arglen}}({{name}}.apply)
+}
+
+{{/definitions}}

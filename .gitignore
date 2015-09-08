@@ -10,8 +10,6 @@ pom.xml.asc
 .hgignore
 .hg/
 
-/src/swagger_gen/examples
-
 cardstorage.yaml
 
 *.scala
