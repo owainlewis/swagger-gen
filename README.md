@@ -22,7 +22,7 @@ We start with a simple mustache template which contains placeholders for our fin
 ```html
 <html>
 <head>
-  <title>Swagger Documentation</title>
+  <title>{{info.title}}</title>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
