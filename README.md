@@ -24,7 +24,10 @@ There are three arguments to the generator
 + -d The destination to dump the results to
 
 ```
-lein run -m swagger-gen.generator -t src/swagger_gen/examples/html/template.mustache -s resources/swagger/petstore.yaml -d service-docs.html
+lein run -m swagger-gen.generator \
+-t src/swagger_gen/examples/html/template.mustache \
+-s resources/swagger/petstore.yaml \
+-d service-docs.html
 ```
 
 For more complex code generation tasks we can write custom functions to assist with the generation.
