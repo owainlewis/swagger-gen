@@ -59,8 +59,12 @@
                   (conj acc "Segment")
                   (conj acc v))) [] (route-parts path)))))
 
+(defn parenthesize [args]
+  (str "(" (apply str (interpose ", " args)) ")"))
+
 (defn deconstruct-spray-path [path]
   (let [route (to-spray-route path)
         args (filter route-arg? (route-parts path))]
-    {:route route :args (mapv normalize-route-arg args)}))
+    {:route route
+     :args (parenthesize (mapv normalize-route-arg args))}))
 

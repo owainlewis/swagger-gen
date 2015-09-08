@@ -17,8 +17,7 @@
      (fn [spec]
        (assoc :spec :foo :bar)))
 
-   Any template being rendered will have access to the new :foo :bar key value pair
-   "
+   Any template being rendered will have access to the new :foo :bar key value pair"
   ([swagger-spec path-to-template transformer]
       (render-string (slurp path-to-template)
         (transformer
