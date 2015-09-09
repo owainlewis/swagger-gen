@@ -28,4 +28,3 @@
 (def as-list   (partial to-sequence-type "List"))
 (def as-seq    (partial to-sequence-type "Seq"))
 (def as-vector (partial to-sequence-type "Vector"))
-
