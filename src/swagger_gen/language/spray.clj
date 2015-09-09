@@ -1,8 +1,8 @@
-(ns swagger-gen.spray
+(ns swagger-gen.language.spray
   (:refer-clojure :exclude [replace])
   (:require
     [clojure.string :refer [blank? replace split]]
-    [swagger-gen.languages.scala :as lang-scala]
+    [swagger-gen.language.scala :as lang-scala]
     [swagger-gen.util :refer [camelize normalize-def quote-string]]))
 
 ;; Model generation code

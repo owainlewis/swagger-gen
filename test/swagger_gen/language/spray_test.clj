@@ -1,7 +1,7 @@
-(ns swagger-gen.spray-test
+(ns swagger-gen.language.spray-test
   (:require [clojure.test :refer :all]
             [swagger-gen.fixtures :refer :all]
-            [swagger-gen.spray :refer :all]))
+            [swagger-gen.language.spray :refer :all]))
 
 (def petstore-yaml "resources/swagger/petstore.yaml")
 

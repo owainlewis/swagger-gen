@@ -55,14 +55,15 @@
   (let [properties (->> definition :attributes :properties)
         required-attributes
           (set (map keyword
-                 (->> definition :attributes :required)))]
-    {:name (:name definition)
-     :args (into []
-             (for [[property attrs] properties]
-               {:name (name property)
-                :type (normalize-def (or (:type attrs) (:$ref attrs)))
-                :items (or (vals (:items attrs)) [])
-                :required (contains? required-attributes property)}))}))
+                    (->> definition :attributes :required)))]
+    (merge definition 
+      {:name (:name definition)
+       :args (into []
+               (for [[property attrs] properties]
+                 {:name (name property)
+                  :type (normalize-def (or (:type attrs) (:$ref attrs)))
+                  :items (or (vals (:items attrs)) [])
+                  :required (contains? required-attributes property)}))})))
 
 (defn get-definitions [data]
   (map (fn [definition]
@@ -85,7 +86,11 @@
                  (merge {:method method :path k}
                         (keywordize-keys attributes)))))))
 
-(defn keywordize-all-but-paths [m]
+(defn keywordize-all-but-paths
+  "Paths prevent an exeptional case where they may be in the form
+   :/path as a keyword which won't parse correctly using Clojure's internal
+   AST rules"
+  [m]
   (into {}
     (for [[k v] m]
       (if (= k "paths")

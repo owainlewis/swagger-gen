@@ -1,5 +1,5 @@
 (ns swagger-gen.examples.scala.generator
-  (:require [swagger-gen.spray :as spray]
+  (:require [swagger-gen.language.spray :as spray]
             [swagger-gen.generator :refer [render-swagger]]))
 
 (defn expand-model
@@ -18,8 +18,8 @@
         additional-params { :namespace "com.google.service.models" }]
     (print
       (render-swagger spec template
-                    (fn [spec]
-                      (merge additional-params
-                             (assoc spec :normalized-definitions
-                                    (map expand-model (:normalized-definitions spec)))))))))
+        (fn [spec]
+          (merge additional-params
+            (assoc spec :normalized-definitions
+            (map expand-model (:normalized-definitions spec)))))))))
   

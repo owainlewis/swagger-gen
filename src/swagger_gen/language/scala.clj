@@ -1,4 +1,4 @@
-(ns swagger-gen.languages.scala
+(ns swagger-gen.language.scala
   (:require
    [swagger-gen.util :refer [quote-string]]))
 
