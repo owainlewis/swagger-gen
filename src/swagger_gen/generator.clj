@@ -15,7 +15,7 @@
 
    (render-swagger spec template 
      (fn [spec]
-       (assoc :spec :foo :bar)))
+       (assoc spec :paths {:foo 1})))
 
    Any template being rendered will have access to the new :foo :bar key value pair"
   ([swagger-spec path-to-template transformer]
