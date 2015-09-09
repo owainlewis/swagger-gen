@@ -2,11 +2,11 @@ package {{namespace}}
 
 import spray.json.DefaultJsonProtocol
 
-{{#definitions}}
+{{#normalized-definitions}}
 {{class}}
 
 object {{name}} extends DefaultJsonProtocol {
   implicit val format = jsonFormat{{arglen}}({{name}}.apply)
 }
 
-{{/definitions}}
+{{/normalized-definitions}}

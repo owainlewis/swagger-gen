@@ -14,9 +14,9 @@
 
 (deftest parse-swagger-test
   (testing "should parse swagger into sections"
-    (is (= (count (keys (parse-swagger petstore-yaml))) 4))))
+    (is (= (count (keys (parse-swagger petstore-yaml))) 10))))
 
-(deftest paths-test
+(deftest normalized-paths-test
   (testing "should extract all paths into a flattened list"
-    (let [extracted (->> (parse-swagger petstore-yaml) :paths)]
+    (let [extracted (->> (parse-swagger petstore-yaml) :normalized-paths)]
       (is (= (count extracted) 4)))))

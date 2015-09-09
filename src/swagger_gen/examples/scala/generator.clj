@@ -20,6 +20,6 @@
       (render-swagger spec template
                     (fn [spec]
                       (merge additional-params
-                             (assoc spec :definitions
-                                    (map expand-model (:definitions spec)))))))))
+                             (assoc spec :normalized-definitions
+                                    (map expand-model (:normalized-definitions spec)))))))))
   
