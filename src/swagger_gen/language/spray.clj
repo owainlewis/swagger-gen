@@ -81,4 +81,3 @@
         args (filter route-arg? (route-parts path))]
     {:route route
      :args (parenthesize (mapv normalize-route-arg args))}))
-
