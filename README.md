@@ -2,6 +2,24 @@
 
 [![Build Status](https://travis-ci.org/owainlewis/swagger-gen.svg)](https://travis-ci.org/owainlewis/swagger-gen)
 
+## Install
+
+Lein
+
+```
+[io.forward/swagger-gen "0.1.0-SNAPSHOT"]
+```
+
+Maven
+
+```
+<dependency>
+  <groupId>io.forward</groupId>
+  <artifactId>swagger-gen</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+</dependency>
+```
+
 A library for easy swagger code generation using Mustache as the template engine.
 
 ## Goals
