@@ -48,40 +48,35 @@
 
 ;; **************************************************************
 
-(defn normalize-definition
-  "Take a raw YAML definition from swagger and normalize it
-   to a form that is easier to work with and parse"
-  [definition]
-  (let [properties (->> definition :attributes :properties)
+(defn extract-args
+  [attributes]
+  (let [properties (->> attributes :properties)
         required-attributes
-          (set (map keyword
-                    (->> definition :attributes :required)))]
-    (merge definition 
-      {:name (:name definition)
-       :args (into []
-               (for [[property attrs] properties]
-                 {:name (name property)
-                  :type (normalize-def (or (:type attrs) (:$ref attrs)))
-                  :items (or (vals (:items attrs)) [])
-                  :required (contains? required-attributes property)}))})))
-
-(defn get-definitions [data]
-  (map (fn [definition]
-         (let [[class-name attributes] definition]
-           {:name (name class-name)
-            :attributes attributes})) data))
+        (set (->> attributes :required (map keyword)))]
+  (into []
+    (for [[property attrs] properties]
+      {:name (name property)
+       :type (normalize-def (or (:type attrs) (:$ref attrs)))
+       :items (or (vals (:items attrs)) [])
+       :required (contains? required-attributes property)}))))
 
 (defn normalize-swagger-definitions
-  "Extract all swagger definitions/models from a spec"
-  [spec]
-  (->> spec (get-definitions) (map normalize-definition)))
+  "Take a swagger definition and re-arrange the structure
+   to make it more easily traversable in templates.
+   We add a :name and :args property to each definition"
+  [definitions]
+  (map (fn [definition]
+         (let [[class-name attributes] definition
+               args (extract-args attributes)]
+         (assoc attributes :name (name class-name) :args args)))
+   definitions))
 
 (defn normalize-swagger-paths
   "Extract all HTTP request paths from a swagger spec
    and normalize them into a flat sequence for easier traversal"
-  [data]
+  [paths]
   (into [] (flatten
-             (for [[k v] data]
+             (for [[k v] paths]
                (for [[method attributes] v]
                  (merge {:method method :path k}
                         (keywordize-keys attributes)))))))
@@ -103,11 +98,12 @@
   "Attach normalized data that is easier to work with to the spec"
   [spec]
   (let [adjusted-spec (keywordize-all-but-paths spec)
-        with-normalized-fields
-          (assoc adjusted-spec  
-            :normalized-paths (normalize-swagger-paths (get spec "paths"))
-            :normalized-definitions (normalize-swagger-definitions (:definitions adjusted-spec)))]
-    (dissoc with-normalized-fields "paths")))
+        normalized-paths (normalize-swagger-paths (get spec "paths"))
+        normalized-defs (normalize-swagger-definitions (:definitions adjusted-spec))      normalized-fields 
+          (assoc adjusted-spec
+            :normalized-paths normalized-paths
+            :normalized-definitions normalized-defs)]
+    (dissoc normalized-fields "paths")))
 
 (defn parse-swagger
   "Load a swagger specification from file path and convert it into

@@ -1,4 +1,4 @@
-(defproject io.forward/swagger-gen "0.1.0"
+(defproject io.forward/swagger-gen "0.1.0-SNAPSHOT"
   :description "Swagger code generation toolkit"
   :url "http://github.com/owainlewis"
   :license {:name "Eclipse Public License"
