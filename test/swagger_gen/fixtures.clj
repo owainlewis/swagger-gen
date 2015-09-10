@@ -36,3 +36,9 @@
    :operationId "editCard",
    :roles ["api.service.CONSUMER"],
    :parameters [body-param path-param]})
+
+(def path
+  ["/echo"
+    {"get" {"description" "Returns the 'message' to the caller",
+     "operationId" "echo",
+     "parameters"  [{"name" "headerParam", "in" "header", "type" "string", "required" false} {"name" "message", "in" "query", "type" "string", "required" true}], "responses" {200 {"description" "Success", "schema" {"$ref" "EchoResponse"}}, "default" {"description" "Error", "schema" {"$ref" "Error"}}}}}])

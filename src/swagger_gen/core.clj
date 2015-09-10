@@ -19,16 +19,16 @@
 (defmethod load-swagger-file :yaml [spec]
   (yml/from-file spec false))
 
-(defn params-of-type 
+(defn params-of-type
   "Extract swagger params of a given type i.e :body or :path"
   [swagger-route param-type]
-  (->> swagger-route 
-       :parameters 
+  (->> swagger-route
+       :parameters
        (filter #(= (:in %) param-type))
        (into [])))
 
-(defn body-params 
-  "Extract one or more body params from a sswagger path"
+(defn body-params
+  "Extract one or more body params from a swagger path"
   [swagger-route]
   (params-of-type swagger-route "body"))
 
@@ -51,16 +51,21 @@
        :items (or (vals (:items attrs)) [])
        :required (contains? required-attributes property)}))))
 
-(defn normalize-swagger-definitions
+(defn normalize-swagger-definition
   "Take a swagger definition and re-arrange the structure
    to make it more easily traversable in templates.
    We add a :name and :args property to each definition"
-  [definitions]
-  (map (fn [definition]
-         (let [[class-name attributes] definition
-               args (extract-args attributes)]
-         (assoc attributes :name (name class-name) :args args)))
-   definitions))
+  [definition]
+  (let [[class-name attributes] definition
+         args (extract-args attributes)]
+    (assoc attributes :name (name class-name)
+                      :args args)))
+
+(defn normalize-swagger-path [path]
+  (let [[path args] ((juxt first rest) path)]
+    (into {}
+      (for [[method attributes] (first args)]
+        (merge {:path path :method method} (keywordize-keys attributes))))))
 
 (defn normalize-swagger-paths
   "Extract all HTTP request paths from a swagger spec
@@ -90,10 +95,11 @@
   [spec]
   (let [adjusted-spec (keywordize-all-but-paths spec)
         normalized-paths (normalize-swagger-paths (get spec "paths"))
-        normalized-defs (normalize-swagger-definitions (:definitions adjusted-spec))      normalized-fields 
-          (assoc adjusted-spec
-            :normalized-paths normalized-paths
-            :normalized-definitions normalized-defs)]
+        normalized-defs (map normalize-swagger-definition (:definitions adjusted-spec))
+        normalized-fields (assoc adjusted-spec
+                            :normalized-paths normalized-paths
+                            :normalized-definitions normalized-defs)]
+
     (dissoc normalized-fields "paths")))
 
 (defn parse-swagger
