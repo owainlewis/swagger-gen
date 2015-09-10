@@ -6,8 +6,8 @@
   "Add some additional data here so we don't have to do any 
    tricky logic in the template"
   [model]
-  (assoc model :class   (spray/render-case-class model)
-               :arglen  (count (:args model))))
+  (assoc model :case_class (spray/render-case-class model)
+               :arg_len    (count (:args model))))
            
 (defn -main
   "An example using custom rendering logic to generate model
