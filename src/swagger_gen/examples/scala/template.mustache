@@ -3,9 +3,9 @@ package {{namespace}}
 import spray.json.DefaultJsonProtocol
 
 {{#normalized-definitions}}
-{{class}}
+{{case_class}}
 
-object {{class_name}} extends DefaultJsonProtocol {
+object {{name}} extends DefaultJsonProtocol {
   implicit val format = jsonFormat{{arg_len}}({{name}}.apply)
 }
 
