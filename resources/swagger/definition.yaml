@@ -1,0 +1,14 @@
+Category:
+  properties:
+    id:
+      type: integer
+      format: int64
+    name:
+      type: string
+Tag:
+  properties:
+    id:
+      type: integer
+      format: int64
+    name:
+      type: string
