@@ -38,5 +38,3 @@
     (is (= "" (parenthesize [])))
     (is (= "foo" (parenthesize ["foo"])))
     (is (= "(foo, bar") (parenthesize ["foo", "bar"]))))
-
-
