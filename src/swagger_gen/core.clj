@@ -3,15 +3,6 @@
             [cheshire.core :as json]
             [swagger-gen.util :refer [normalize-def]]
             [yaml.core :as yml]))
-          
-;; Code for processing swagger specs and normalizing into more workable forms
-;;
-;; By default it will reorder the paths data into a single array of paths rather than the nested structure 
-;; imposed by swagger specs
-;;
-;; This makes processing the swagger path data much easier
-;;
-;; TODO decide whether we need to "mess" with the spec at this point or whether we just pass through
 
 (defn file-extension
   "Extract the file extension from a swagger spec or file"
