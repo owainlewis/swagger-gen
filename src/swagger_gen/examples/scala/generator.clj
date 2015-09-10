@@ -21,4 +21,4 @@
         (fn [spec]
           (merge additional-params
             (assoc spec :normalized-definitions
-            (map expand-model (:normalized-definitions spec)))))))))
+              (map expand-model (:normalized-definitions spec)))))))))
