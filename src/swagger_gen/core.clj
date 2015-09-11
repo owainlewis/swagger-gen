@@ -95,11 +95,12 @@
          (normalize-swagger-spec)))
 
 (defn render-swagger
-  "Render a swagger spec to a given template. If options are passed then 
-   merge them into the data from spec.
+  "Render a swagger spec to a given template. 
    
    We can optionally pass in a transfomer function that takes a swagger spec
-   and enriches or alters it with a customer function
+   and enriches or alters it with a customer function. This could be used
+   to merge additional arguments or transform a swagger spec by restructuring it
+   in a way that is more acceptable for template rendering.
 
    Examples:
    *************************************************************************
