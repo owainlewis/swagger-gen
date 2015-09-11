@@ -30,6 +30,8 @@ A library for easy swagger code generation using Mustache as the template engine
 
 ## Goals
 
+There is an existing Java generator for swagger but Clojure seems a much leaner and easier language for the task.
+
 1. Lightweight and simple DSL for traversing Swagger Specs
 2. Clean and simple code gen based on templates
 3. More complex code generation through Clojure functions
@@ -95,7 +97,7 @@ case class string.
 ```clojure
 (ns swagger-gen.examples.scala.generator
   (:require [swagger-gen.spray :as spray]
-            [swagger-gen.generator :refer [render-swagger]]))
+            [swagger-gen.core :refer [render-swagger]]))
 
 (defn expand-model
   "Add some additional data here so we don't have to do any 
