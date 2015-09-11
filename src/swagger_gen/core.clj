@@ -81,7 +81,9 @@
 (defn keywordize-all-but-paths
   "Paths prevent an exeptional case where they may be in the form
    :/path as a keyword which won't parse correctly using Clojure's internal
-   AST rules"
+   AST rules. This is a fundamental issue with YAML and Clojure keywords. 
+   By treating it as a string we can avoid the issue by mapping it into a 
+   nicer form {:path \"foo\"}"
   [m]
   (into {}
     (for [[k v] m]
