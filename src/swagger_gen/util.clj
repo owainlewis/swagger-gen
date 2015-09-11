@@ -22,3 +22,21 @@
 (defn quote-string
   [s]
   (format "\"%s\"" s))
+
+(defn params-of-type
+  "Extract swagger params of a given type i.e :body or :path"
+  [swagger-route param-type]
+  (->> swagger-route
+       :parameters
+       (filter #(= (:in %) param-type))
+       (into [])))
+
+(defn body-params
+  "Extract one or more body params from a swagger path"
+  [swagger-route]
+  (params-of-type swagger-route "body"))
+
+(defn query-params
+  "Extract one or more query params from a swagger path"
+  [swagger-route]
+  (params-of-type swagger-route "query"))
