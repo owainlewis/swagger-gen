@@ -1,5 +1,11 @@
 # swagger-gen
 
+Sawgger gen is a tool for generating code or documents from a swagger spec. It can be used to quickly generate
+boilerplate code in your application in any number of different languages. It is template driven and can be used
+either as a CLI tool or as a library when more control is needed over code generation.
+
+![](http://www.davenewson.com/_media/tutorials/php/swagger-logo.gif)
+
 [![Build Status](https://travis-ci.org/owainlewis/swagger-gen.svg)](https://travis-ci.org/owainlewis/swagger-gen)
 
 ## Install
