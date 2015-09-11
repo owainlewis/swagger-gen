@@ -14,4 +14,5 @@
           ["-s" "--spec"        "The spec path"]
           ["-t" "--template"    "The template path"]
           ["-d" "--destination" "The destination path"])]
-    (print opts)))
+    (println "Swagger Gen")
+    (println opts)))
