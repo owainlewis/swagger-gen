@@ -30,16 +30,17 @@
 
 (def cli-options
   ;; An option with a required argument
-  [["-t" "--template TEMPLATE" "The template path"]
-   ["-s" "--spec SPEC" "The spec path"]
+  [["-s" "--spec SPEC" "The spec path"]
+   ["-t" "--template TEMPLATE" "The template path"]
    ["-d" "--destination DESTINATION" "The destination path"]])
+
+(defn dispatch [spec template destination]
+  (println (format "Rending template spec %s to %s" spec template))
+  (spit destination (render-swagger spec template)))
 
 (defn -main [& args]
   (let [args (parse-opts args cli-options)]
-    (let [template    (get-in args [:options :template])
-          spec        (get-in args [:options :spec])
+    (let [spec        (get-in args [:options :spec])
+          template    (get-in args [:options :template])
           destination (get-in args [:options :destination])]
-      ;; TODO error handling on missing args
-      (do
-        (println "Generating swagger output from spec")
-        (spit destination (render-swagger spec template))))))
+    (dispatch spec template destination))))

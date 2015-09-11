@@ -1,6 +1,7 @@
 (ns swagger-gen.core
   (:require [clojure.walk :refer [keywordize-keys]]
             [cheshire.core :as json]
+            [stencil.core :refer [render-string]]
             [swagger-gen.util :refer [normalize-def]]
             [yaml.core :as yml]))
 
@@ -108,3 +109,26 @@
   [path-to-swagger]
     (->> (load-swagger-file path-to-swagger)
          (normalize-swagger-spec)))
+
+(defn render-swagger
+  "Render a swagger spec to a given template. If options are passed then 
+   merge them into the data from spec.
+   
+   We can optionally pass in a transfomer function that takes a swagger spec
+   and enriches or alters it with a customer function
+
+   Examples:
+   *************************************************************************
+     1. Render direct (render-swagger spec template)
+
+     2. Render with a function that transforms a swagger spec
+
+       (render-swagger spec template 
+         (fn [spec]
+           (assoc spec :namespace \"foobar\")))"
+  ([swagger-spec path-to-template transformer]
+      (render-string (slurp path-to-template)
+        (transformer
+          (parse-swagger swagger-spec))))
+  ([swagger-spec path-to-template]
+    (render-swagger swagger-spec path-to-template identity)))
