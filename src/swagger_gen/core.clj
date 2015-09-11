@@ -20,8 +20,6 @@
 (defmethod load-swagger-file :yaml [spec]
   (yml/from-file spec false))
 
-;; **************************************************************
-
 (defn extract-args
   [attributes]
   (let [properties (->> attributes :properties)
@@ -72,8 +70,6 @@
       (if (= k "paths")
         {k v}
         (keywordize-keys {k v})))))
-
-;; **************************************************************
 
 (defn normalize-swagger-spec
   "Attach normalized data that is easier to work with to the spec"
