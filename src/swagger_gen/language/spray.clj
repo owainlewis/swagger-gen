@@ -14,6 +14,7 @@
 
 (defn format-type [type items]
   (condp = type
+    "boolean"   "Boolean"
     "string"    "String"
     "array"     (resolve-array-type items)
     "integer"   "Int"
