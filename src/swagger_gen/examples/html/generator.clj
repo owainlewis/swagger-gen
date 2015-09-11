@@ -1,5 +1,5 @@
 (ns swagger-gen.examples.html.generator
-  (:require [swagger-gen.generator :refer [render-swagger]]))
+  (:require [swagger-gen.core :refer [render-swagger]]))
 
 (def template "src/swagger_gen/examples/html/template.mustache")
 

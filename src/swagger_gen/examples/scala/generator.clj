@@ -1,6 +1,6 @@
 (ns swagger-gen.examples.scala.generator
   (:require [swagger-gen.language.spray :as spray]
-            [swagger-gen.generator :refer [render-swagger]]))
+            [swagger-gen.core :refer [render-swagger]]))
 
 (defn expand-model
   "Add some additional data here so we don't have to do any 
