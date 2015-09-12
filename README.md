@@ -177,7 +177,9 @@ Check out the examples directory for inspiration. Here is an example of how you 
 API from a swagger spec
 
 ```
-lein run -m swagger-gen.examples.golang.generator && go run src/swagger_gen/examples/golang/main.go
+lein run -m swagger-gen.examples.golang.generator && \
+go run src/swagger_gen/examples/golang/main.go && \
+curl -i http://localhost:8080/pets
 ```
 
 ## License
