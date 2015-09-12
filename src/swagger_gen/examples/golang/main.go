@@ -19,6 +19,7 @@ func findPetsHandler(w http.ResponseWriter, r *http.Request) {
      w.WriteHeader(http.StatusOK)
      fmt.Fprintln(w, "Get all pets")
 }
+
 /**
  * Create a new pet
  */
@@ -27,6 +28,7 @@ func addPetHandler(w http.ResponseWriter, r *http.Request) {
      w.WriteHeader(http.StatusOK)
      fmt.Fprintln(w, "Create a new pet")
 }
+
 /**
  * Get a pet by ID
  */
@@ -36,6 +38,7 @@ func findPetByIdHandler(w http.ResponseWriter, r *http.Request) {
      w.WriteHeader(http.StatusOK)
      fmt.Fprintln(w, "Get a pet by ID")
 }
+
 /**
  * Delete a single pet by ID
  */
