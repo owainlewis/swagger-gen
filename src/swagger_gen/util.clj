@@ -36,6 +36,11 @@
   [swagger-route]
   (params-of-type swagger-route "body"))
 
+(defn path-params
+  "Extract one or more path params from a swagger path"
+  [swagger-route]
+  (params-of-type swagger-route "path"))
+
 (defn query-params
   "Extract one or more query params from a swagger path"
   [swagger-route]
