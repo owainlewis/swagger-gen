@@ -23,8 +23,8 @@ func {{operation}}Handler(w http.ResponseWriter, r *http.Request) {
      w.WriteHeader(http.StatusOK)
      fmt.Fprintln(w, "{{doc}}")
 }
-{{/routes}}
 
+{{/routes}}
 func main() {
      router := mux.NewRouter().StrictSlash(true)
      {{#routes}}
