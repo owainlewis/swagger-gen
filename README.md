@@ -171,6 +171,15 @@ object Error extends DefaultJsonProtocol {
 
 ```
 
+## Further examples
+
+Check out the examples directory for inspiration. Here is an example of how you can generate a working golang rest
+API from a swagger spec
+
+```
+lein run -m swagger-gen.examples.golang.generator && go run src/swagger_gen/examples/golang/main.go
+```
+
 ## License
 
 Copyright © 2015 Owain Lewis
