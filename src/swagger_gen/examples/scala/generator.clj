@@ -6,8 +6,9 @@
   "Add some additional data here so we don't have to do any 
    tricky logic in the template"
   [model]
-  (assoc model :case_class (spray/render-case-class model)
-               :arg_len    (count (:args model))))
+  {:class (spray/render-case-class model)
+   :args (count (:args model))
+   :name (:name model)})
            
 (defn -main
   "An example using custom rendering logic to generate model
@@ -16,9 +17,8 @@
   (let [spec "resources/swagger/petstore.yaml"
         template "src/swagger_gen/examples/scala/template.mustache"
         additional-params { :namespace "com.google.service.models" }]
-    (print
-      (render-swagger spec template
-        (fn [spec]
-          (merge additional-params
-            (assoc spec :normalized-definitions
-              (map expand-model (:normalized-definitions spec)))))))))
+    (render-swagger spec template
+      (fn [spec]
+        (merge additional-params
+          {:models   
+            (map expand-model (:normalized-definitions spec))})))))
