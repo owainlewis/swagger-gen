@@ -4,8 +4,10 @@ package {{namespace}}
 
 import spray.json.DefaultJsonProtocol
 
+sealed trait Event
+
 {{#models}}
-{{class}}
+{{class}} extends Event
 
 object {{name}} extends DefaultJsonProtocol {
   implicit val format = jsonFormat{{args}}({{name}}.apply)
