@@ -93,9 +93,17 @@
   "Render a swagger spec to a given template. 
    
    We can optionally pass in a transfomer function that takes a swagger spec
-   and enriches or alters it with a customer function. This could be used
-   to merge additional arguments or transform a swagger spec by restructuring it
+   and enriches or alters it with a custome function. This could be used
+   to *merge* additional arguments 
+   
+   (fn [spec] (merge additional-params spec))
+   
+   (fn [spec] (assoc spec :foo "bar"))
+   
+   or transform a swagger spec by restructuring it
    in a way that is more acceptable for template rendering.
+   
+   (fn [spec] (transform spec))
 
    Examples:
    *************************************************************************
