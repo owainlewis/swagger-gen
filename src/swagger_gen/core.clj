@@ -98,7 +98,7 @@
    
    (fn [spec] (merge additional-params spec))
    
-   (fn [spec] (assoc spec :foo "bar"))
+   (fn [spec] (assoc spec :foo \"bar\"))
    
    or *transform* a swagger spec by restructuring it
    in a way that is more acceptable for template rendering.
