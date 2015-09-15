@@ -19,12 +19,13 @@
 
 (deftest normalized-paths-test
   (testing "should extract all paths into a flattened list"
-    (let [extracted (->> (parse-swagger petstore-yaml) :normalized-paths)]
+    (let [extracted (->> (parse-swagger petstore-yaml) :adjusted-paths)]
       (is (= (count extracted) 4)))))
 
 (deftest normalize-definition-test
   (testing "should normalize a swagger model definition"
-  (let [def [:Pet {:allOf [{:$ref "#/definitions/NewPet"} {:required ["id"], :properties {:id {:type "integer", :format "int64"}}}]}]]
+    (let [def [:Pet {:allOf [{:$ref "#/definitions/NewPet"}
+                             {:required ["id"], :properties {:id {:type "integer", :format "int64"}}}]}]]
     (is (= (normalize-swagger-definition def)
       {:allOf [{:$ref "#/definitions/NewPet"}
                  {:required ["id"], :properties
@@ -33,4 +34,9 @@
 (deftest normalise-path-test
   (testing "should normalize a swagger path"
     (is (= (normalize-swagger-path path)
-      {:path "/echo", :method "get", :description "Returns the 'message' to the caller", :operationId "echo", :parameters [{:name "headerParam", :in "header", :type "string", :required false} {:name "message", :in "query", :type "string", :required true}], :responses {200 {:description "Success", :schema {:$ref "EchoResponse"}}, :default {:description "Error", :schema {:$ref "Error"}}}}))))
+           {:path "/echo", :method "get", :description "Returns the 'message' to the caller",
+            :operationId "echo",
+            :parameters [{:name "headerParam", :in "header", :type "string", :required false}
+                         {:name "message", :in "query", :type "string", :required true}],
+            :responses {200 {:description "Success", :schema {:$ref "EchoResponse"}},
+                        :default {:description "Error", :schema {:$ref "Error"}}}}))))

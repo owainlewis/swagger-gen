@@ -8,9 +8,7 @@
 (defn file-extension
   "Extract the file extension from a swagger spec or file"
   [spec]
-  (->> (clojure.string/split spec #"\.")
-       last
-       keyword))
+  (-> (clojure.string/split spec #"\.") last keyword))
 
 (defmulti load-swagger-file file-extension)
 
@@ -22,7 +20,7 @@
 
 (defn extract-args
   [attributes]
-  (let [properties (->> attributes :properties)
+  (let [properties (-> attributes :properties)
         required-attributes
         (set (->> attributes :required (map keyword)))]
   (into []
@@ -76,10 +74,11 @@
   [spec]
   (let [adjusted-spec (keywordize-all-but-paths spec)
         normalized-paths (normalize-swagger-paths (get spec "paths"))
-        normalized-defs (map normalize-swagger-definition (:definitions adjusted-spec))
+        normalized-defs (map normalize-swagger-definition
+                             (:definitions adjusted-spec))
         normalized-fields (assoc adjusted-spec
-                            :normalized-paths normalized-paths
-                            :normalized-definitions normalized-defs)]
+                            :adjusted-paths normalized-paths
+                            :adjusted-definitions normalized-defs)]
 
     (dissoc normalized-fields "paths")))
 
@@ -87,7 +86,7 @@
   "Load a swagger specification from file path and convert it into
    a sane/traversable format making it easier to work with"
   [path-to-swagger]
-    (->> (load-swagger-file path-to-swagger)
+    (-> (load-swagger-file path-to-swagger)
          (normalize-swagger-spec)))
 
 (defn render-swagger
