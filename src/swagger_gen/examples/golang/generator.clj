@@ -22,6 +22,6 @@
   (let [template "src/swagger_gen/examples/golang/template.mustache"]
     (render-swagger spec template
       (fn [spec]
-        {:routes (map path-to-go-route (:adjusted-paths spec))}))))
+        {:routes (map path-to-go-route (:paths spec))}))))
 
 (defn -main [] (print (generate)))
