@@ -40,7 +40,8 @@
     (assoc attributes :name (name class-name)
                       :args args)))
 
-(defn normalize-swagger-path [path]
+(defn normalize-swagger-path
+  [path]
   (let [[path args] ((juxt first rest) path)]
     (into {}
       (for [[method attributes] (first args)]
@@ -77,7 +78,7 @@
         normalized-defs (map normalize-swagger-definition
                              (:definitions adjusted-spec))
         normalized-fields (assoc adjusted-spec
-                            :adjusted-paths normalized-paths
+                            :paths normalized-paths
                             :adjusted-definitions normalized-defs)]
 
     (dissoc normalized-fields "paths")))

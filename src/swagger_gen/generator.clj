@@ -19,7 +19,7 @@
           ["-s" "--spec"        "The spec path"]
           ["-t" "--template"    "The template path"]
           ["-d" "--destination" "The destination path"])]
-    (println "Swagger Gen")
+    (println "Running generator")
     (let [[spec template dest] ((juxt :spec :template :destination) opts)
           args [spec template dest]]
       (if (every? (complement nil?) args)
