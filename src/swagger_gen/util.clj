@@ -38,10 +38,7 @@
 (defn params-of-type
   "Extract swagger params of a given type i.e :body or :path"
   [swagger-route param-type]
-  (->> swagger-route
-       :parameters
-       (filter #(= (:in %) param-type))
-       (into [])))
+  (->> swagger-route :parameters (filter #(= (:in %) param-type)) (into [])))
 
 (defn body-params
   "Extract one or more body params from a swagger path"
