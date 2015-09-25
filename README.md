@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/owainlewis/swagger-gen.svg)](https://travis-ci.org/owainlewis/swagger-gen)
 
-Swagger-gen is a tool for generating code or documents from a swagger spec. 
+Swagger-gen is a tool for generating code or documents from a swagger spec.
 
-It can quickly generate boilerplate code in your application in any number of different languages. It is template driven and can be used either as a CLI tool or as a library when more control is needed over code generation.
+It can quickly generate boilerplate code in your application in any number of different languages.
 
 ![](http://www.davenewson.com/_media/tutorials/php/swagger-logo.gif)
 
@@ -13,7 +13,7 @@ It can quickly generate boilerplate code in your application in any number of di
 Lein
 
 ```
-[io.forward/swagger-gen "0.1.0-SNAPSHOT"]
+[io.forward/swagger-gen "0.1.2"]
 ```
 
 Maven
@@ -22,7 +22,7 @@ Maven
 <dependency>
   <groupId>io.forward</groupId>
   <artifactId>swagger-gen</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 
@@ -37,9 +37,6 @@ There is an existing Java generator for swagger but Clojure seems a much leaner 
 3. More complex code generation through Clojure functions
 
 ## Usage
-
-There are two ways to use the swagger generator. If your use case is simple enough, you can use 
-the CLI and a single mustache template to generate code from a swagger spec.
 
 This example generates HTML docs from the canonical petstore example.
 
@@ -61,7 +58,7 @@ We start with a simple mustache template which contains placeholders for our fin
         <th>Path</th>
         <th>Operation ID</th>
       </tr>
-  
+
       {{#paths}}
         <tr>
           <td>{{method}}</td>
@@ -73,19 +70,6 @@ We start with a simple mustache template which contains placeholders for our fin
   </div>
 </body>
 </html>
-```
-
-There are three arguments to the generator
-
-+ -t The path to your mustache template
-+ -s The path to your swagger spec
-+ -d The destination to dump the results to
-
-```
-lein run -m swagger-gen.generator \
--t src/swagger_gen/examples/html/template.mustache \
--s resources/swagger/petstore.yaml \
--d service-docs.html
 ```
 
 For more complex code generation tasks we can write custom functions to assist with the generation.
@@ -100,12 +84,12 @@ case class string.
             [swagger-gen.core :refer [render-swagger]]))
 
 (defn expand-model
-  "Add some additional data here so we don't have to do any 
+  "Add some additional data here so we don't have to do any
    tricky logic in the template"
   [model]
   (assoc model :class   (spray/render-case-class model)
                :arglen  (count (:args model))))
-           
+
 (defn -main
   "An example using custom rendering logic to generate model
    code in Scala for a standard Spray application"
@@ -121,7 +105,7 @@ case class string.
               (map expand-model (:definitions spec)))))))))
 ```
 
-Swagger gen templates are just simple mustache files. 
+Swagger gen templates are just simple mustache files.
 
 ```
 package {{namespace}}
