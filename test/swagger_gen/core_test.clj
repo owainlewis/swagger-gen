@@ -5,10 +5,6 @@
 
 (def petstore-yaml "resources/swagger/petstore.yaml")
 
-(deftest file-exension-test []
-  (testing "should return correct extension"
-    (is (= :yaml (file-extension petstore-yaml)))))
-
 (deftest loads-swagger-yaml []
   (testing "should load a swagger yaml file"
     (is (map? (load-swagger-file petstore-yaml)))))
