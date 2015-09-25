@@ -2,6 +2,11 @@
   (:require [clojure.test :refer :all]
             [swagger-gen.util :refer :all]))
 
+(deftest interpose-map-test
+  (testing "should concat values and comma separate"
+    (let [actual (interpose-map identity ", " ["foo", "bar", "baz"])]
+      (is (= actual "foo, bar, baz")))))
+    
 (deftest test-camelize
   (testing "should convert snake_case to CamelCase"
     (is (= "fooBar" (camelize "foo_bar")))))
