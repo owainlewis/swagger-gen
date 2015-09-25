@@ -1,7 +1,8 @@
 (ns swagger-gen.util
-  (:require 
-    [clojure.string :refer 
-      [split replace-first lower-case capitalize join]]))
+  (:refer-clojure :exclude [replace])
+  (:require
+    [clojure.string :refer
+      [split replace replace-first lower-case capitalize join]]))
 
 (defn interpose-map [f sep xs] (->> (map f xs) (interpose sep) (apply str)))
 
@@ -9,18 +10,18 @@
     "Unescape HTML special entities in mustache templates"
     [text]
     (.. ^String text
-      (s/replace "&amp;" "&")
-      (s/replace "&lt;" "<")
-      (s/replace "&gt;" ">")
-      (s/replace "&quot;" "\"")))
-    
+      (replace "&amp;" "&")
+      (replace "&lt;" "<")
+      (replace "&gt;" ">")
+      (replace "&quot;" "\"")))
+
 (defn camelize
   "Convert snake_case string into CamelCase"
   [input-string]
   (let [words (split input-string #"[\s_-]+")]
     (join ""
           (cons (lower-case (first words))
-                (map capitalize (rest words)))))) 
+                (map capitalize (rest words))))))
 
 (defn normalize-def
   "Normalize a definition like #/definitions/Card into Card"
@@ -38,7 +39,9 @@
 (defn params-of-type
   "Extract swagger params of a given type i.e :body or :path"
   [swagger-route param-type]
-  (->> swagger-route :parameters (filter #(= (:in %) param-type)) (into [])))
+  (->> (:parameters swagger-route)
+       (filter #(= (:in %) param-type))
+       (into [])))
 
 (defn body-params
   "Extract one or more body params from a swagger path"

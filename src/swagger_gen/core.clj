@@ -1,21 +1,10 @@
 (ns swagger-gen.core
   (:require [clojure.walk :refer [keywordize-keys]]
-            [cheshire.core :as json]
             [stencil.core :refer [render-string]]
             [swagger-gen.util :refer [normalize-def]]
             [yaml.core :as yml]))
 
-(defn file-extension
-  "Extract the file extension from a swagger spec or file"
-  [spec]
-  (-> (clojure.string/split spec #"\.") last keyword))
-
-(defmulti load-swagger-file file-extension)
-
-(defmethod load-swagger-file :json [spec]
-  (->> spec slurp json/parse-string))
-
-(defmethod load-swagger-file :yaml [spec]
+(defn load-swagger-file [spec]
   (yml/from-file spec false))
 
 (defn extract-args
@@ -25,9 +14,9 @@
         (set (->> attributes :required (map keyword)))]
   (into []
     (for [[property attrs] properties]
-      {:name (name property)
-       :type (normalize-def (or (:type attrs) (:$ref attrs)))
-       :items (or (vals (:items attrs)) [])
+      {:name     (name property)
+       :type     (normalize-def (or (:type attrs) (:$ref attrs)))
+       :items    (or (vals (:items attrs)) [])
        :required (contains? required-attributes property)}))))
 
 (defn normalize-swagger-definition
@@ -45,7 +34,8 @@
   (let [[path args] ((juxt first rest) path)]
     (into {}
       (for [[method attributes] (first args)]
-        (merge {:path path :method method} (keywordize-keys attributes))))))
+        (merge {:path path :method method}
+               (keywordize-keys attributes))))))
 
 (defn normalize-swagger-paths
   "Extract all HTTP request paths from a swagger spec
@@ -60,8 +50,8 @@
 (defn keywordize-all-but-paths
   "Paths prevent an exeptional case where they may be in the form
    :/path as a keyword which won't parse correctly using Clojure's internal
-   AST rules. This is a fundamental issue with YAML and Clojure keywords. 
-   By treating it as a string we can avoid the issue by mapping it into a 
+   AST rules. This is a fundamental issue with YAML and Clojure keywords.
+   By treating it as a string we can avoid the issue by mapping it into a
    nicer form {:path \"foo\"}"
   [m]
   (into {}
@@ -91,19 +81,19 @@
          (normalize-swagger-spec)))
 
 (defn render-swagger
-  "Render a swagger spec to a given template. 
-   
+  "Render a swagger spec to a given template.
+
    We can optionally pass in a transfomer function that takes a swagger spec
    and enriches or alters it with a custom function. This could be used
-   to *merge* additional arguments 
-   
+   to *merge* additional arguments
+
    (fn [spec] (merge additional-params spec))
-   
+
    (fn [spec] (assoc spec :foo \"bar\"))
-   
+
    or *transform* a swagger spec by restructuring it
    in a way that is more acceptable for template rendering.
-   
+
    (fn [spec] (transform spec))
 
    Examples:
@@ -112,7 +102,7 @@
 
      2. Render with a function that transforms a swagger spec
 
-       (render-swagger spec template 
+       (render-swagger spec template
          (fn [spec]
            (assoc spec :namespace \"foobar\")))"
   ([swagger-spec path-to-template transformer]
