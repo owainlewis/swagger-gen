@@ -1,6 +1,6 @@
 (ns swagger-gen.core
   (:require [clojure.walk :refer [keywordize-keys]]
-            [stencil.core :refer [render-string]]
+            [stencil.core :as stencil]
             [swagger-gen.util :refer [normalize-def]]
             [yaml.core :as yml]))
 
@@ -69,7 +69,7 @@
                              (:definitions adjusted-spec))
         normalized-fields (assoc adjusted-spec
                             :paths normalized-paths
-                            :adjusted-definitions normalized-defs)]
+                            :models normalized-defs)]
 
     (dissoc normalized-fields "paths")))
 
@@ -78,7 +78,9 @@
    a sane/traversable format making it easier to work with"
   [path-to-swagger]
     (-> (load-swagger-file path-to-swagger)
-         (normalize-swagger-spec)))
+        (normalize-swagger-spec)))
+
+(def render-template-string stencil/render-string)
 
 (defn render-swagger
   "Render a swagger spec to a given template.
@@ -106,7 +108,7 @@
          (fn [spec]
            (assoc spec :namespace \"foobar\")))"
   ([swagger-spec path-to-template transformer]
-      (render-string (slurp path-to-template)
+      (stencil/render-string (slurp path-to-template)
         (transformer
           (parse-swagger swagger-spec))))
   ([swagger-spec path-to-template]
