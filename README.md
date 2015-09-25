@@ -13,7 +13,7 @@ It can quickly generate boilerplate code in your application in any number of di
 Lein
 
 ```
-[io.forward/swagger-gen "0.1.2"]
+[io.forward/swagger-gen "1.0.2"]
 ```
 
 Maven
@@ -22,7 +22,7 @@ Maven
 <dependency>
   <groupId>io.forward</groupId>
   <artifactId>swagger-gen</artifactId>
-  <version>0.1.2</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 
