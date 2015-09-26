@@ -7,19 +7,16 @@
    tricky logic in the template"
   [model]
   {:class (spray/render-case-class model)
-   :args (count (:args model))
+   :args 0
    :name (:name model)})
 
 (defn -main
   "An example using custom rendering logic to generate model
    code in Scala for a standard Spray application"
   []
-  (let [spec "resources/swagger/petstore.yaml"
+  (let [spec "resources/swagger/uber.yaml"
         template "src/swagger_gen/examples/scala/template.mustache"
         additional-params { :namespace "com.google.service.models" }]
     (print
-    (render-swagger spec template
-      (fn [spec]
-        (merge additional-params
-          {:models
-            (map expand-model (:models spec))}))))))
+      (render-swagger spec template
+        (fn [spec] spec)))))

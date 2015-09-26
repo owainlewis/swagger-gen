@@ -4,81 +4,66 @@
             [swagger-gen.util :refer [normalize-def]]
             [yaml.core :as yml]))
 
-(defn load-swagger-file [spec]
-  (yml/from-file spec false))
+(defn load-swagger-file
+  "Reads a swagger.yaml file into a Clojure data structure with string keys"
+  [path-to-spec]
+  (yml/from-file path-to-spec false))
 
-(defn extract-args
-  [attributes]
-  (let [properties (-> attributes :properties)
-        required-attributes
-        (set (->> attributes :required (map keyword)))]
-  (into []
-    (for [[property attrs] properties]
-      {:name     (name property)
-       :type     (normalize-def (or (:type attrs) (:$ref attrs)))
-       :items    (or (vals (:items attrs)) [])
-       :required (contains? required-attributes property)}))))
+;; Do a minimal transformation on Swagger data structure to make it easier to traverse
 
-(defn normalize-swagger-definition
-  "Take a swagger definition and re-arrange the structure
-   to make it more easily traversable in templates.
-   We add a :name and :args property to each definition"
-  [definition]
-  (let [[class-name attributes] definition
-         args (extract-args attributes)]
-    (assoc attributes :name (name class-name)
-                      :args args)))
-
-(defn normalize-swagger-path
-  [path]
-  (let [[path args] ((juxt first rest) path)]
-    (into {}
-      (for [[method attributes] (first args)]
-        (merge {:path path :method method}
-               (keywordize-keys attributes))))))
-
-(defn normalize-swagger-paths
-  "Extract all HTTP request paths from a swagger spec
-   and normalize them into a flat sequence for easier traversal"
+(defn transform-paths
+  "Flattens swagger paths into a more sensible data structure. Returns a vector of all swagger paths
+   in a normalized form"
   [paths]
-  (into [] (flatten
-             (for [[k v] paths]
-               (for [[method attributes] v]
-                 (merge {:method method :path k}
-                        (keywordize-keys attributes)))))))
+  (flatten (into []
+    (for [[path info] paths]
+      (for [[method attributes] info]
+        (merge attributes {"path" path "method" method}))))))
+      
+(defn transform-definitions
+  "Flattens swagger definitions into a more sensible data structure. Returns a vector of all 
+   swagger definitions in normalized form"
+  [definitions]
+  (into []
+    (for [[k v] definitions]
+      (let [required (set (:required v))]
+       (merge v {"name" k})))))
 
-(defn keywordize-all-but-paths
-  "Paths prevent an exeptional case where they may be in the form
-   :/path as a keyword which won't parse correctly using Clojure's internal
-   AST rules. This is a fundamental issue with YAML and Clojure keywords.
-   By treating it as a string we can avoid the issue by mapping it into a
-   nicer form {:path \"foo\"}"
-  [m]
-  (into {}
-    (for [[k v] m]
-      (if (= k "paths")
-        {k v}
-        (keywordize-keys {k v})))))
+(defn params-of-type
+  "Extract swagger params of a given type i.e :body or :path"
+  [path param-type]
+  (->> (:parameters path) (filter #(= (:in %) param-type)) (into [])))
+
+(defn body-params
+  "Extract one or more body params from a swagger path"
+  [path]
+  (params-of-type path "body"))
+
+(defn path-params
+  "Extract one or more path params from a swagger path"
+  [path]
+  (params-of-type path "path"))
+
+(defn query-params
+  "Extract one or more query params from a swagger path"
+  [path]
+  (params-of-type path "query"))
 
 (defn normalize-swagger-spec
   "Attach normalized data that is easier to work with to the spec"
   [spec]
-  (let [adjusted-spec (keywordize-all-but-paths spec)
-        normalized-paths (normalize-swagger-paths (get spec "paths"))
-        normalized-defs (map normalize-swagger-definition
-                             (:definitions adjusted-spec))
-        normalized-fields (assoc adjusted-spec
-                            :paths normalized-paths
-                            :models normalized-defs)]
-
-    (dissoc normalized-fields "paths")))
+  (let [paths (get spec "paths")
+        definitions (get spec "definitions")]
+    (assoc spec "definitions" (transform-definitions definitions)
+                "paths" (transform-paths paths))))
 
 (defn parse-swagger
   "Load a swagger specification from file path and convert it into
    a sane/traversable format making it easier to work with"
   [path-to-swagger]
     (-> (load-swagger-file path-to-swagger)
-        (normalize-swagger-spec)))
+        (normalize-swagger-spec)
+        (keywordize-keys)))
 
 (def render-template-string stencil/render-string)
 

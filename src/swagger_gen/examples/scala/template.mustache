@@ -6,11 +6,12 @@ import spray.json.DefaultJsonProtocol
 
 sealed trait Event
 
-{{#models}}
-{{class}} extends Event
+{{#definitions}}
 
-object {{name}} extends DefaultJsonProtocol {
-  implicit val format = jsonFormat{{args}}({{name}}.apply)
+case class {{name}} {
+  {{#properties}}
+    {{name}}
+  {{/properties}}
 }
 
-{{/models}}
+{{/definitions}}
