@@ -4,20 +4,38 @@ package com.google.service.models
 
 import spray.json.DefaultJsonProtocol
 
-case object Pet
+case class Activities(offset: Int, limit: Int, count: Int, history: Seq[Activity])
 
-object Pet extends DefaultJsonProtocol {
-  implicit val format = jsonFormat0(Pet.apply)
+object Activities {
+  implicit val format = jsonFormat4(Activities)
 }
 
-case class NewPet(name: String, tag: String)
+case class Activity(uuid: String)
 
-object NewPet extends DefaultJsonProtocol {
-  implicit val format = jsonFormat2(NewPet.apply)
+object Activity {
+  implicit val format = jsonFormat1(Activity)
 }
 
-case class Error(code: Int, message: String)
+case class Error(code: Int, message: String, fields: String)
 
-object Error extends DefaultJsonProtocol {
-  implicit val format = jsonFormat2(Error.apply)
+object Error {
+  implicit val format = jsonFormat3(Error)
+}
+
+case class PriceEstimate(productId: String, currencyCode: String, displayName: String, estimate: String, lowEstimate: Double, highEstimate: Double, surgeMultiplier: Double)
+
+object PriceEstimate {
+  implicit val format = jsonFormat7(PriceEstimate)
+}
+
+case class Product(productId: String, description: String, displayName: String, capacity: String, image: String)
+
+object Product {
+  implicit val format = jsonFormat5(Product)
+}
+
+case class Profile(firstName: String, lastName: String, email: String, picture: String, promoCode: String)
+
+object Profile {
+  implicit val format = jsonFormat5(Profile)
 }
