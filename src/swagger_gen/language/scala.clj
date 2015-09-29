@@ -53,4 +53,3 @@
       (format "case object %s" klass)
       (let [args (->> (map render-property props) (interpose ", ") (apply str))]
         (format "case class %s(%s)" klass args)))))
-
