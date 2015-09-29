@@ -14,4 +14,3 @@
   (testing "should generate a Scala case class"
     (is (= "case class Error(code: Int, message: String)"
            (render-case-class error-definition)))))
-
