@@ -7,17 +7,8 @@ import spray.json.DefaultJsonProtocol
 {{#definitions}}
 {{klass}}
 
-<<<<<<< HEAD
 object {{name}} {
   implicit val format = jsonFormat{{args}}({{name}})
-=======
-{{#definitions}}
-
-case class {{name}} {
-  {{#properties}}
-    {{name}}
-  {{/properties}}
->>>>>>> d4bbb05ba17781e4a7c0e5f886dca21dab1ee7f9
 }
 
 {{/definitions}}
