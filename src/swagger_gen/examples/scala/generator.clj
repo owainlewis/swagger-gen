@@ -19,10 +19,8 @@
         params { :package "com.google.service.models" }]
     (print
       (render-swagger spec template
-
-                      (fn [spec]
-                        (merge params
-                               {:definitions
-                                (->> (:definitions spec)
-                                     (map expand-def)
-                                     (sort-by :name))}))))))
+        (fn [spec]
+          (merge params
+            {:definitions (->> (:definitions spec)
+                          (map expand-def)
+                          (sort-by :name))}))))))
