@@ -1,5 +1,7 @@
 (ns swagger-gen.language.scala
   (:require
+   [swagger-gen.core :as core]
+   [swagger-gen.util :refer [camelize normalize-def]]
    [swagger-gen.util :refer [quote-string]]))
 
 (defn to-cons-list
@@ -10,21 +12,45 @@
              (interpose " :: ")
              (apply str))))
 
-(defn to-seq-type
+(defn to-seq
   "Genrate a scala sequence such as List(foo, bar) or Vector(1,2)"
   [seq-type xs]
   (format "%s(%s)"
     seq-type           
     (->> xs (interpose ", ") (apply str))))
 
-(def scala-array  (partial to-seq-type "Array"))
-(def scala-vector (partial to-seq-type "Vector"))
-(def scala-list   (partial to-seq-type "List"))
+;; ***********************************************************
+;; Case class generation
+;; ***********************************************************
 
-(defn to-sequence-type
-  [seq-kind t]
-  (format "%s[%s]" seq-kind t))
+(defn gen-seq
+  [attributes]
+  (format "Seq[%s]"
+    (normalize-def       
+      (or (:$ref attributes) (get-in attributes [:items :$ref])))))
 
-(def as-list   (partial to-sequence-type "List"))
-(def as-seq    (partial to-sequence-type "Seq"))
-(def as-vector (partial to-sequence-type "Vector"))
+(defn scala-type [attributes]
+  (condp = (:type attributes)
+    "boolean"   "Boolean"
+    "string"    "String"
+    "array"     (gen-seq attributes)
+    "integer"   "Int"
+    "number"    "Double"
+    (:type attributes)))
+
+(defn render-property
+  [prop]
+  (let [[property-name attributes] prop]
+    (format "%s: %s" (swagger-gen.util/camelize (name property-name))
+                     (scala-type attributes))))
+
+(defn render-case-class
+  "Take a swagger model definition and turns it into a Scala case class 
+   or case object depending on arity"
+  [definition]
+  (let [[klass props] ((juxt :name :properties) definition)]
+    (if ((comp zero? count) props)
+      (format "case object %s" klass)
+      (let [args (->> (map render-property props) (interpose ", ") (apply str))]
+        (format "case class %s(%s)" klass args)))))
+

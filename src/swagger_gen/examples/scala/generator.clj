@@ -1,25 +1,28 @@
 (ns swagger-gen.examples.scala.generator
-  (:require [swagger-gen.language.spray :as spray]
-            [swagger-gen.core :refer [render-swagger]]))
+  (:require [swagger-gen.language.scala :as scala]
+            [swagger-gen.core :refer [render-swagger parse-swagger]]))
 
-(defn expand-model
+(defn expand-def
   "Add some additional data here so we don't have to do any
    tricky logic in the template"
-  [model]
-  {:class (spray/render-case-class model)
-   :args (count (:args model))
-   :name (:name model)})
+  [definition]
+  {:klass (scala/render-case-class definition)
+   :args (count (:properties definition))
+   :name (:name definition)})
 
 (defn -main
   "An example using custom rendering logic to generate model
    code in Scala for a standard Spray application"
   []
-  (let [spec "resources/swagger/petstore.yaml"
+  (let [spec "resources/swagger/uber.yaml"
         template "src/swagger_gen/examples/scala/template.mustache"
-        additional-params { :namespace "com.google.service.models" }]
+        params { :package "com.google.service.models" }]
     (print
-    (render-swagger spec template
-      (fn [spec]
-        (merge additional-params
-          {:models
-            (map expand-model (:models spec))}))))))
+      (render-swagger spec template
+
+                      (fn [spec]
+                        (merge params
+                               {:definitions
+                                (->> (:definitions spec)
+                                     (map expand-def)
+                                     (sort-by :name))}))))))

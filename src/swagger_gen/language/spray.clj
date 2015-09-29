@@ -5,47 +5,7 @@
     [swagger-gen.language.scala :as lang-scala]
     [swagger-gen.util :refer [camelize normalize-def quote-string]]))
 
-;; Model generation code
-
-(defn resolve-array-type
-  [items]
-  (let [type (first items)]
-    (format "Seq[%s]" (normalize-def type))))
-
-(defn format-type [type items]
-  (condp = type
-    "boolean"   "Boolean"
-    "string"    "String"
-    "array"     (resolve-array-type items)
-    "integer"   "Int"
-    type))
-
-(defn render-arg [arg]
-  (let [[name type items] ((juxt :name :type :items) arg)]
-    (format "%s: %s"
-            (camelize name)
-            (format-type type items))))
-
-(defn render-case-class
-  "Take a swagger model definition and turns it into a Scala case class 
-   or case object depending on arity"
-  [definition]
-  (let [[name args] ((juxt :name :args) definition)]
-    (if (zero? (count args))
-    (format "case object %s" name)
-             (let [arguments (->> (map render-arg args) (interpose ", ")
-                                  (apply str))]
-               (format "case class %s(%s)" name  arguments)))))
-
-;; Route generation
-
-(defn to-cons-list
-  "Generate a scala list from a sequence of values"
-  [xs]
-  (let [quoted-strings (mapv quote-string xs)]
-        (->> (conj quoted-strings "Nil")
-             (interpose " :: ")
-             (apply str))))
+;; Spray.io code
 
 (defn starts-and-ends-with? [input starts ends]
   (and (.startsWith input starts)
