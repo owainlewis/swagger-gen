@@ -37,4 +37,3 @@
 (defn quote-string
   [s]
   (format "\"%s\"" s))
-
