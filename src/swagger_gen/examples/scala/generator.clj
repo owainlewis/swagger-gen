@@ -19,6 +19,7 @@
         params { :package "com.google.service.models" }]
     (print
       (render-swagger spec template
+
                       (fn [spec]
                         (merge params
                                {:definitions
