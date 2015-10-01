@@ -1,7 +1,6 @@
 (ns swagger-gen.core
   (:require [clojure.walk :refer [keywordize-keys]]
             [stencil.core :as stencil]
-            [swagger-gen.util :refer [normalize-def]]
             [yaml.core :as yml]))
 
 (defn load-swagger-file
