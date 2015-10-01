@@ -30,7 +30,7 @@
 (defn optional? [is-required scala-type]
   (if is-required
     (identity scala-type)
-    (format "Option[%s]" scala-type)))
+    (format "Option[%s] = None" scala-type)))
 
 (defn raw-type [attributes]
   (condp = (:type attributes)
