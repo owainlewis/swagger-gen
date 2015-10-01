@@ -28,4 +28,4 @@
 (deftest check-definitions-test []
   (testing "should add name to definition and flatten into vector"
     (let [definitions (:definitions petstore)]
-      (println (first definitions)))))
+      )))

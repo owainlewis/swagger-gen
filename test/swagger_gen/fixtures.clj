@@ -2,7 +2,13 @@
 
 (def error-definition
   {:required ["code" "message"],
-   :properties {:code    {:type "integer", :format "int32"},
+   :properties {:code    {:type "integer"},
+                :message {:type "string"}},
+   :name "Error"})
+
+(def error-definition-with-optional-params
+  {:required [],
+   :properties {:code    {:type "integer"},
                 :message {:type "string"}},
    :name "Error"})
 
@@ -32,4 +38,3 @@
    :operationId "editCard",
    :roles ["api.service.CONSUMER"],
    :parameters [body-param path-param]})
-
