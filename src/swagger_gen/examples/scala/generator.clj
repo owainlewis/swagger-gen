@@ -6,7 +6,7 @@
   "Add some additional data here so we don't have to do any
    tricky logic in the template"
   [definition]
-  {:klass (scala/render-case-class definition)
+  {:klass (scala/render-case-class definition true)
    :args (count (:properties definition))
    :name (:name definition)})
 

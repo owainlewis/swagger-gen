@@ -1,8 +1,6 @@
 (ns swagger-gen.language.scala
   (:require
-   [swagger-gen.core :as core]
-   [swagger-gen.util :refer [camelize normalize-def]]
-   [swagger-gen.util :refer [quote-string]]))
+   [swagger-gen.util :refer [camelize normalize-def quote-string]]))
 
 (defn to-cons-list
   "Generate a scala list from a sequence of values"
@@ -16,7 +14,7 @@
   "Genrate a scala sequence such as List(foo, bar) or Vector(1,2)"
   [seq-type xs]
   (format "%s(%s)"
-    seq-type           
+    seq-type
     (->> xs (interpose ", ") (apply str))))
 
 ;; ***********************************************************
@@ -25,31 +23,43 @@
 
 (defn gen-seq
   [attributes]
-  (format "Seq[%s]"
-    (normalize-def       
-      (or (:$ref attributes) (get-in attributes [:items :$ref])))))
+  (let [seq-type (normalize-def (or (:$ref attributes)
+                                    (get-in attributes [:items :$ref])))]
+    (format "Seq[%s]" seq-type)))
 
-(defn scala-type [attributes]
+(defn optional? [is-required scala-type]
+  (if is-required
+    (identity scala-type)
+    (format "Option[%s]" scala-type)))
+
+(defn raw-type [attributes]
   (condp = (:type attributes)
     "boolean"   "Boolean"
     "string"    "String"
     "array"     (gen-seq attributes)
     "integer"   "Int"
     "number"    "Double"
-    (:type attributes)))
+    (or (:type attributes)
+        (normalize-def (:$ref attributes)))))
+
+(defn scala-type [is-required attributes]
+  (optional? is-required (raw-type attributes)))
 
 (defn render-property
-  [prop]
-  (let [[property-name attributes] prop]
-    (format "%s: %s" (swagger-gen.util/camelize (name property-name))
-                     (scala-type attributes))))
+  [required-properties prop]
+  (let [[property-name attributes] prop
+        required (contains? required-properties (name property-name))]
+    (format "%s: %s"
+            (camelize (name property-name))
+            (scala-type required attributes))))
 
 (defn render-case-class
-  "Take a swagger model definition and turns it into a Scala case class 
-   or case object depending on arity"
-  [definition]
-  (let [[klass props] ((juxt :name :properties) definition)]
-    (if ((comp zero? count) props)
+  [definition use-case-objects]
+  (let [[klass props required] ((juxt :name :properties :required) definition)
+        required-properties (set required)
+        args (->> (map #(render-property required-properties %) props)
+                  (interpose ", ")
+                  (apply str))]
+    (if (and use-case-objects (zero? (count args)))
       (format "case object %s" klass)
-      (let [args (->> (map render-property props) (interpose ", ") (apply str))]
-        (format "case class %s(%s)" klass args)))))
+      (format "case class %s(%s)" klass args))))
