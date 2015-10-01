@@ -18,15 +18,14 @@
     (for [[path info] paths]
       (for [[method attributes] info]
         (merge attributes {"path" path "method" method}))))))
-      
+
 (defn transform-definitions
-  "Flattens swagger definitions into a more sensible data structure. Returns a vector of all 
-   swagger definitions in normalized form"
+  "Flattens swagger definitions into a more sensible data structure.
+   Returns a vector of all swagger definitions in normalized form"
   [definitions]
   (into []
     (for [[k v] definitions]
-      (let [required (set (:required v))]
-       (merge v {"name" k})))))
+      (merge v {"name" k}))))
 
 (defn params-of-type
   "Extract swagger params of a given type i.e :body or :path"
@@ -51,10 +50,10 @@
 (defn normalize-swagger-spec
   "Attach normalized data that is easier to work with to the spec"
   [spec]
-  (let [paths (get spec "paths")
+  (let [paths       (get spec "paths")
         definitions (get spec "definitions")]
     (assoc spec "definitions" (transform-definitions definitions)
-                "paths" (transform-paths paths))))
+                "paths"       (transform-paths paths))))
 
 (defn parse-swagger
   "Load a swagger specification from file path and convert it into
