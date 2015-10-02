@@ -3,7 +3,7 @@
 (def error-definition
   {:required ["code" "message"],
    :properties {:code    {:type "integer"},
-                :message {:type "string"}},
+                :message {:type "string" :enum ["Foo", "Bar"]}},
    :name "Error"})
 
 (def error-definition-with-optional-params

@@ -1,5 +1,6 @@
 (ns swagger-gen.language.scala
   (:require
+   [clojure.string   :refer [capitalize]]
    [swagger-gen.util :refer [camelize normalize-def quote-string]]))
 
 (defn to-cons-list
@@ -32,7 +33,9 @@
     (identity scala-type)
     (format "Option[%s] = None" scala-type)))
 
-(defn raw-type [attributes]
+(defn raw-type
+  "Mapping of swagger types to Scala types"
+  [attributes]
   (condp = (:type attributes)
     "boolean"   "Boolean"
     "string"    "String"
@@ -42,22 +45,32 @@
     (or (:type attributes)
         (normalize-def (:$ref attributes)))))
 
-(defn scala-type [is-required attributes]
-  (optional? is-required (raw-type attributes)))
+(defn enum-type-string [definition-name property-name]
+  (format "%s%sEnum.Type"
+          (capitalize (name definition-name))
+          (capitalize (name property-name))))
+
+(defn scala-type
+  "Convert to a Scala type"
+  [definition-name is-required property-name attributes]
+  (if (not (nil? (:enum attributes)))
+    (optional? is-required (enum-type-string definition-name property-name))
+    (optional? is-required (raw-type attributes))))
 
 (defn render-property
-  [required-properties prop]
+  [definition-name required-properties prop]
   (let [[property-name attributes] prop
         required (contains? required-properties (name property-name))]
     (format "%s: %s"
             (camelize (name property-name))
-            (scala-type required attributes))))
+            (scala-type definition-name required property-name attributes))))
 
 (defn render-case-class
   [definition use-case-objects]
   (let [[klass props required] ((juxt :name :properties :required) definition)
         required-properties (set required)
-        args (->> (map #(render-property required-properties %) props)
+        definition-name (:name definition)
+        args (->> (map #(render-property definition-name required-properties %) props)
                   (interpose ", ")
                   (apply str))]
     (if (and use-case-objects (zero? (count args)))

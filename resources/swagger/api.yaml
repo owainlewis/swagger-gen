@@ -47,5 +47,9 @@ definitions:
         format: int32
       message:
         type: string
+        description: Error message
+        enum:
+          - Foo
+          - Bar
       fields:
         type: string
