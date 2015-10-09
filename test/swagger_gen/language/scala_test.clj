@@ -5,6 +5,16 @@
 
 (def petstore-yaml "resources/swagger/petstore.yaml")
 
+(deftest transform-rate-test []
+  (testing "should transform rate definition into Scala case class"
+    (let [actual (render-case-class rate-definition true)]
+      (is (= actual "case class Rates(rates: Seq[Rate])")))))
+
+(deftest transform-definition-array-string-test []
+  (testing "should transform array of string definitions"
+    (let [actual (render-case-class definition-array-string true)]
+      (is (= actual "case class Rates(rates: Seq[String])")))))
+
 (deftest generate-case-object-test []
   (testing "should generate a Scala case object when arity is zero"
     (let [route {:name "Foo" :args []}]

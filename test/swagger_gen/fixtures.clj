@@ -1,4 +1,22 @@
-(ns swagger-gen.fixtures)
+(ns swagger-gen.fixtures
+  (:require [yaml.core :as yaml]))
+
+(defn load-fixture [fixture]
+  (yaml/from-file (format "test/swagger_gen/fixtures/%s" fixture) true))
+
+(def rate-definition
+  {:description "a list of forex rates"
+   :required ["rates"]
+   :name "Rates"
+   :properties {:rates {:type "array",
+                        :items {:$ref "#/definitions/Rate"}}}})
+
+(def definition-array-string
+  {:description "a list of forex rates"
+   :required ["rates"]
+   :name "Rates"
+   :properties {:rates {:type "array",
+                        :items {:type "string"}}}})
 
 (def error-definition
   {:required ["code" "message"],

@@ -1,0 +1,9 @@
+Rates:
+  description: a list of forex rates
+  required:
+    - rates
+  properties:
+    rates:
+      type: array
+      items:
+        $ref: '#/definitions/Rate'
