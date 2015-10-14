@@ -56,7 +56,7 @@
 
 (defn enum-type-string [definition-name property-name]
   (format "%s%sEnum.Type"
-          (capitalize (name definition-name))
+          (name definition-name)
           (capitalize (name property-name))))
 
 (defn scala-type

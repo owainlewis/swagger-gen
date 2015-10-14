@@ -11,6 +11,12 @@
    :properties {:rates {:type "array",
                         :items {:$ref "#/definitions/Rate"}}}})
 
+(def definition-with-array
+  {:description "Something"
+   :required ["roles"]
+   :name "Foo"
+   :properties {:roles {:type "array" :items {:type "string"}}}})
+
 (def definition-array-string
   {:description "a list of forex rates"
    :required ["rates"]

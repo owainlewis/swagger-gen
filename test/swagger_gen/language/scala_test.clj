@@ -22,7 +22,7 @@
 
 (deftest enum-type-string-test []
   (testing "should generate enum string"
-    (is (= "FooBarEnum.Type" (enum-type-string :foo :bar)))))
+    (is (= "FooBarEnum.Type" (enum-type-string :Foo :bar)))))
 
 (deftest optional?-test []
   (testing "should convert to an option type"
@@ -32,7 +32,7 @@
 (deftest optional-enum-type-string-test []
   (testing "should generate optional enum string"
     (is (= "Option[FooBarEnum.Type] = None"
-           (optional? false (enum-type-string :foo :bar))))))
+           (optional? false (enum-type-string :Foo :bar))))))
 
 (deftest enum-case-class-test []
   (testing "should render Scala enum types"
@@ -44,4 +44,10 @@
   (testing "should handle optional params"
     (let [expected "case class Error(code: Option[Int] = None, message: Option[String] = None)"
           actual (render-case-class error-definition-with-optional-params true)]
+      (is (= expected actual)))))
+
+(deftest model-with-array-string-test []
+  (testing "should convert data to model"
+    (let [expected "case class Foo(roles: Seq[String])"
+          actual (render-case-class definition-with-array false)]
       (is (= expected actual)))))
