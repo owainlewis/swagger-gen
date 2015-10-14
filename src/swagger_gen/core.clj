@@ -1,6 +1,7 @@
 (ns swagger-gen.core
   (:require [clojure.walk :refer [keywordize-keys]]
             [stencil.core :as stencil]
+            [yaml.reader :as reader]
             [yaml.core :as yml]))
 
 (defn load-swagger-file
@@ -55,6 +56,11 @@
     (assoc spec "definitions" (transform-definitions definitions)
                 "paths"       (transform-paths paths))))
 
+(defn parse-swagger-string [swagger-spec]
+  (-> (reader/parse-string swagger-spec false)
+      (normalize-swagger-spec)
+      (keywordize-keys)))
+
 (defn parse-swagger
   "Load a swagger specification from file path and convert it into
    a sane/traversable format making it easier to work with"
@@ -95,4 +101,9 @@
         (transformer
           (parse-swagger swagger-spec))))
   ([swagger-spec path-to-template]
-    (render-swagger swagger-spec path-to-template identity)))
+   (render-swagger swagger-spec path-to-template identity)))
+
+(defn render-swagger-template
+  [swagger-spec template-string transformer]
+    (stencil/render-string template-string
+      (transformer (parse-swagger-string swagger-spec))))
