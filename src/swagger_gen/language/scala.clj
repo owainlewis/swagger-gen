@@ -55,7 +55,7 @@
         (normalize-def (:$ref attributes)))))
 
 (defn enum-type-string [definition-name property-name]
-  (format "%s%sEnum.Type"
+  (format "%s%sEnum.Value"
           (name definition-name)
           (capitalize (name property-name))))
 
