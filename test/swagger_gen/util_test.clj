@@ -8,8 +8,12 @@
       (is (= actual "foo, bar, baz")))))
     
 (deftest test-camelize
-  (testing "should convert snake_case to CamelCase"
+  (testing "should convert snake_case to camelCase"
     (is (= "fooBar" (camelize "foo_bar")))))
+
+(deftest test-upcase-camelize
+  (testing "should convert snake_case to CamelCase"
+    (is (= "FooBar" (upcase-camelize "foo_bar")))))
 
 (deftest test-normalize-def
   (testing "should strip the definition prefix"

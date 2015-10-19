@@ -25,6 +25,14 @@
       (cons (lower-case (first words))
         (map capitalize (rest words))))))
 
+(defn capitalize-first-letter [s]
+  (if (> (count s) 0)
+    (str (Character/toUpperCase (.charAt s 0))
+      (subs s 1))
+    s))
+
+(def upcase-camelize (comp capitalize-first-letter camelize))
+
 (defn normalize-def
   "Normalize a definition like #/definitions/Card into Card"
   [type-ref]
