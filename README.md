@@ -12,16 +12,6 @@ It can quickly generate boilerplate code in your application in any number of di
 
 [![Clojars Project](http://clojars.org/io.forward/swagger-gen/latest-version.svg)](http://clojars.org/io.forward/swagger-gen)
 
-Maven
-
-```
-<dependency>
-  <groupId>io.forward</groupId>
-  <artifactId>swagger-gen</artifactId>
-  <version>1.0.7</version>
-</dependency>
-```
-
 A library for easy swagger code generation using Mustache as the template engine.
 
 ## Goals
