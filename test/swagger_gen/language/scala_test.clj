@@ -24,6 +24,10 @@
   (testing "should generate enum string"
     (is (= "FooBarEnum.Value" (enum-type-string :Foo :bar)))))
 
+(deftest enum-type-string-camel-test []
+  (testing "should generate enum string"
+    (is (= "FooBarBazEnum.Value" (enum-type-string :Foo "bar_baz")))))
+
 (deftest optional?-test []
   (testing "should convert to an option type"
     (is (= "Option[Foo] = None" (optional? false "Foo")))

@@ -1,7 +1,7 @@
 (ns swagger-gen.language.scala
   (:require
    [clojure.string   :refer [capitalize]]
-   [swagger-gen.util :refer [camelize normalize-def quote-string]]))
+   [swagger-gen.util :refer [camelize upcase-camelize normalize-def quote-string]]))
 
 (defn to-cons-list
   "Generate a scala list from a sequence of values"
@@ -57,7 +57,7 @@
 (defn enum-type-string [definition-name property-name]
   (format "%s%sEnum.Value"
           (name definition-name)
-          (capitalize (name property-name))))
+          (upcase-camelize (name property-name))))
 
 (defn scala-type
   "Convert to a Scala type"
