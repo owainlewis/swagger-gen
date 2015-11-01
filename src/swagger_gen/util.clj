@@ -42,6 +42,5 @@
   ([xs]           (apply str xs))
   ([xs separator] (apply str (interpose separator xs))))
 
-(defn quote-string
-  [s]
+(defn quote-string [s] 
   (format "\"%s\"" s))
