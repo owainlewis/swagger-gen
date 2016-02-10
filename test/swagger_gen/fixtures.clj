@@ -8,8 +8,7 @@
   {:description "a list of forex rates"
    :required ["rates"]
    :name "Rates"
-   :properties {:rates {:type "array",
-                        :items {:$ref "#/definitions/Rate"}}}})
+   :properties {:rates {:type "array" :items {:$ref "#/definitions/Rate"}}}})
 
 (def definition-with-array
   {:description "Something"
@@ -21,8 +20,7 @@
   {:description "a list of forex rates"
    :required ["rates"]
    :name "Rates"
-   :properties {:rates {:type "array",
-                        :items {:type "string"}}}})
+   :properties {:rates {:type "array" :items {:type "string"}}}})
 
 (def error-definition
   {:required ["code" "message"],
@@ -32,8 +30,7 @@
 
 (def error-definition-with-optional-params
   {:required [],
-   :properties {:code    {:type "integer"},
-                :message {:type "string"}},
+   :properties {:code {:type "integer"} :message {:type "string"}}
    :name "Error"})
 
 (def simple-route
