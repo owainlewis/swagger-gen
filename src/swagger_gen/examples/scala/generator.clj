@@ -22,5 +22,5 @@
         (fn [spec]
           (merge params
             {:definitions (->> (:definitions spec)
-                          (map expand-def)
-                          (sort-by :name))}))))))
+                               (map expand-def)
+                               (sort-by :name))}))))))
