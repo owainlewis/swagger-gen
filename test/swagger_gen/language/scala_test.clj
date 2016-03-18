@@ -40,7 +40,7 @@
 
 (deftest enum-case-class-test []
   (testing "should render Scala enum types"
-    (let [expected "case class Error(code: Int, message: ErrorMessageEnum.Value)"
+    (let [expected "case class Error(code: Long, message: ErrorMessageEnum.Value)"
           actual (render-case-class error-definition true)]
       (is (= expected actual)))))
 
