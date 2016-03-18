@@ -24,7 +24,7 @@
 
 (def error-definition
   {:required ["code" "message"],
-   :properties {:code    {:type "integer"},
+   :properties {:code    {:type "integer" :format "int64"},
                 :message {:type "string" :enum ["Foo", "Bar"]}},
    :name "Error"})
 

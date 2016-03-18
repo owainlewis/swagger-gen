@@ -22,18 +22,18 @@
 ;; Case class generation
 ;; ***********************************************************
 
-(defn type-as-scala [swagger-type]
+(defn type-as-scala [swagger-type format]
   (condp = swagger-type
     "boolean"   "Boolean"
     "string"    "String"
-    "integer"   "Int"
+    "integer"   (if (= "int64" format) "Long" "Int")
     "number"    "Double"
     swagger-type))
 
 (defn gen-seq
   [attributes]
   (let [seq-type (normalize-def (or (:$ref attributes)
-                                    (type-as-scala (get-in attributes [:items :type]))
+                                    (type-as-scala (get-in attributes [:items :type]) (get-in attributes [:items :format]))
                                     (get-in attributes [:items :$ref])))]
     (format "Seq[%s]" seq-type)))
 
@@ -49,7 +49,7 @@
     "boolean"   "Boolean"
     "string"    "String"
     "array"     (gen-seq attributes)
-    "integer"   "Int"
+    "integer"   (if (= "int64" (:format attributes)) "Long" "Int")
     "number"    "Double"
     (or (:type attributes)
         (normalize-def (:$ref attributes)))))
