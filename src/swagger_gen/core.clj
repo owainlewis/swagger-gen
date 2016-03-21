@@ -1,5 +1,6 @@
 (ns swagger-gen.core
-  (:require [clojure.walk :refer [keywordize-keys]]
+  (:require [clojure.walk :refer [postwalk]]
+            [flatland.ordered.map :refer [ordered-map]]
             [stencil.core :as stencil]
             [yaml.reader :as reader]
             [yaml.core :as yml]))
@@ -56,10 +57,17 @@
     (assoc spec "definitions" (transform-definitions definitions)
                 "paths"       (transform-paths paths))))
 
+(defn keywordize-keys-ordered
+  "Recursively transforms all map keys from strings to keywords."
+  [m]
+  (let [f (fn [[k v]] (if (string? k) [(keyword k) v] [k v]))]
+    ;; only apply to maps
+    (postwalk (fn [x] (if (map? x) (into (ordered-map) (map f x)) x)) m)))
+
 (defn parse-swagger-string [swagger-spec]
   (-> (reader/parse-string swagger-spec false)
       (normalize-swagger-spec)
-      (keywordize-keys)))
+      (keywordize-keys-ordered)))
 
 (defn parse-swagger
   "Load a swagger specification from file path and convert it into
@@ -67,7 +75,7 @@
   [path-to-swagger]
     (-> (load-swagger-file path-to-swagger)
         (normalize-swagger-spec)
-        (keywordize-keys)))
+        (keywordize-keys-ordered)))
 
 (def render-template-string stencil/render-string)
 
