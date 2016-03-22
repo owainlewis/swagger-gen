@@ -16,13 +16,13 @@
 (deftest parse-swagger-test []
   (testing "it should parse a swagger spec"
     (is (= (keys petstore)
-           '(:schemes :definitions :produces :paths :consumes :host :info :swagger :basePath)))))
+           '(:swagger :info :host :basePath :schemes :consumes :produces :paths :definitions)))))
 
 (deftest parse-swagger-string-test []
   (testing "it should parse a swagger spec string"
     (let [from-string (parse-swagger-string (slurp petstore-yaml))]
-    (is (= (keys from-string)
-           '(:schemes :definitions :produces :paths :consumes :host :info :swagger :basePath))))))
+      (is (= (keys from-string)
+           '(:swagger :info :host :basePath :schemes :consumes :produces :paths :definitions))))))  
 
 (deftest check-paths-test []
   (testing "paths should be a vector of paths containing method and path"
