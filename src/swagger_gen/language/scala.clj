@@ -71,7 +71,9 @@
   (let [[property-name attributes] prop
         required (contains? required-properties (name property-name))]
     (format "%s: %s"
-            (camelize (name property-name))
+            (if (.equals (name property-name) "type")
+              (str "`type`")
+              (camelize (name property-name)))
             (scala-type definition-name required property-name attributes))))
 
 (defn render-case-class
