@@ -3,6 +3,60 @@
    [clojure.string   :refer [capitalize]]
    [swagger-gen.util :refer [camelize upcase-camelize normalize-def quote-string]]))
 
+;; ************************************************
+;; Code generation tooling for Scala case classes
+;; ************************************************
+
+(def scala-language-reserved-words #{
+  "abstract"
+  "case"
+  "catch"
+  "class"
+  "def"
+  "do"
+  "else"
+  "extends"
+  "false"
+  "final"
+  "finally"
+  "for"
+  "forSome"
+  "if"
+  "implicit"
+  "import"
+  "lazy"
+  "match"
+  "new"
+  "null"
+  "object"
+  "override"
+  "package"
+  "private"
+  "protected"
+  "return"
+  "sealed"
+  "super"
+  "this"
+  "throw"
+  "trait"
+  "try"
+  "true"
+  "type"
+  "val"
+  "var"
+  "while"
+  "with"
+  "yield"
+})
+
+(defn escape-if-reserved
+  "Compiler errors will occur if Scala case classes contain reserved words.
+   This will automatically put reversed words in backticks"
+  [word]
+  (if (contains? scala-language-reserved-words word)
+    (format "`%s`" word)
+    word))
+
 (defn to-cons-list
   "Generate a scala list from a sequence of values"
   [xs]
@@ -22,7 +76,8 @@
 ;; Case class generation
 ;; ***********************************************************
 
-(defn type-as-scala [swagger-type format]
+(defn type-as-scala
+  [swagger-type format]
   (condp = swagger-type
     "boolean"   "Boolean"
     "string"    "String"
@@ -33,7 +88,9 @@
 (defn gen-seq
   [attributes]
   (let [seq-type (normalize-def (or (:$ref attributes)
-                                    (type-as-scala (get-in attributes [:items :type]) (get-in attributes [:items :format]))
+                                    (type-as-scala
+                                      (get-in attributes [:items :type])
+                                      (get-in attributes [:items :format]))
                                     (get-in attributes [:items :$ref])))]
     (format "Seq[%s]" seq-type)))
 
@@ -71,10 +128,8 @@
   (let [[property-name attributes] prop
         required (contains? required-properties (name property-name))]
     (format "%s: %s"
-            (if (.equals (name property-name) "type")
-              (str "`type`")
-              (camelize (name property-name)))
-            (scala-type definition-name required property-name attributes))))
+      (escape-if-reserved (camelize (name property-name)))
+      (scala-type definition-name required property-name attributes))))
 
 (defn render-case-class
   [definition use-case-objects]
