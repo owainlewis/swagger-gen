@@ -51,7 +51,7 @@
 
 (defn escape-if-reserved
   "Compiler errors will occur if Scala case classes contain reserved words.
-   This will automatically put reversed words in backticks"
+   This will automatically put reserved words in backticks"
   [word]
   (if (contains? scala-language-reserved-words word)
     (format "`%s`" word)
