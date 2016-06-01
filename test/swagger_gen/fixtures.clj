@@ -1,8 +1,12 @@
 (ns swagger-gen.fixtures
   (:require [yaml.core :as yaml]))
 
-(defn load-fixture [fixture]
-  (yaml/from-file (format "test/swagger_gen/fixtures/%s" fixture) true))
+(defn load-fixture
+  "Load a .yaml fixture from disk. This is preferable to reduce noise in the tests"
+  [fixture]
+  (yaml/from-file
+    (format "test/swagger_gen/fixtures/%s" fixture)
+      true))
 
 (def rate-definition
   {:description "a list of forex rates"
@@ -15,6 +19,12 @@
    :required ["roles"]
    :name "Foo"
    :properties {:roles {:type "array" :items {:type "string"}}}})
+
+(def definition-with-reserved-words
+  {:description "A type with reserved words"
+   :required ["type"]
+   :name "Foo"
+   :properties {:type {:type "string"}}})
 
 (def definition-array-string
   {:description "a list of forex rates"

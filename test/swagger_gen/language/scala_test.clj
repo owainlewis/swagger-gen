@@ -55,3 +55,9 @@
     (let [expected "case class Foo(roles: Seq[String])"
           actual (render-case-class definition-with-array false)]
       (is (= expected actual)))))
+
+(deftest reserved-words-test []
+  (testing "should escape (with backticks) definitions that contain reserved words e.g type"
+    (let [expected "case class Foo(`type`: String)"
+          actual (render-case-class definition-with-reserved-words false)]
+      (is (= expected actual)))))
