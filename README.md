@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/owainlewis/swagger-gen.svg)](https://travis-ci.org/owainlewis/swagger-gen)
 
-Swagger-gen is a tool for generating code or documents from a swagger spec.
+Swagger-gen is a simple tool for generating code from a swagger spec.
 
 It can quickly generate boilerplate code in your application in any number of different languages.
 
@@ -61,24 +61,23 @@ We start with a simple mustache template which contains placeholders for our fin
 For more complex code generation tasks we can write custom functions to assist with the generation.
 
 The only real "logic" here is adding some additional data to the swagger structure to make rendering in the templates
-easier. For example in the example below we have a custom function that renders a swagger path as a scala
+easier. For example, in the example below we have a custom function that renders a swagger path as a scala
 case class string.
 
 ```clojure
 (ns swagger-gen.examples.scala.generator
-  (:require [swagger-gen.spray :as spray]
+  (:require [swagger-gen.scala :as scala]
             [swagger-gen.core :refer [render-swagger]]))
 
 (defn expand-model
   "Add some additional data here so we don't have to do any
    tricky logic in the template"
   [model]
-  (assoc model :class   (spray/render-case-class model)
+  (assoc model :class   (scala/render-case-class model)
                :arglen  (count (:args model))))
 
 (defn -main
-  "An example using custom rendering logic to generate model
-   code in Scala for a standard Spray application"
+  "An example using custom rendering logic to generate model code in Scala"
   []
   (let [spec "resources/swagger/petstore.yaml"
         template "src/swagger_gen/examples/scala/template.mustache"
@@ -106,50 +105,6 @@ object {{name}} extends DefaultJsonProtocol {
 }
 
 {{/definitions}}
-```
-
-## Running the example
-
-```
-➜  swagger-gen git:(master) lein run -m swagger-gen.examples.scala.generator
-```
-
-Generates the following Scala code and dumps it in the terminal
-
-```scala
-package com.google.service.models
-
-import spray.json.DefaultJsonProtocol
-
-case object Pet
-
-object Pet extends DefaultJsonProtocol {
-  implicit val format = jsonFormat0(Pet.apply)
-}
-
-case class NewPet(name: String, tag: String)
-
-object NewPet extends DefaultJsonProtocol {
-  implicit val format = jsonFormat2(NewPet.apply)
-}
-
-case class Error(code: Int, message: String)
-
-object Error extends DefaultJsonProtocol {
-  implicit val format = jsonFormat2(Error.apply)
-}
-
-```
-
-## Further examples
-
-Check out the examples directory for inspiration. Here is an example of how you can generate a working golang rest
-API from a swagger spec
-
-```
-lein run -m swagger-gen.examples.golang.generator && \
-go run src/swagger_gen/examples/golang/main.go && \
-curl -i http://localhost:8080/pets
 ```
 
 ## License
